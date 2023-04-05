@@ -1,6 +1,6 @@
 export class tipoProd {
-    private idTipo: number
-    private descTipoProd: string
+    private idTipo: number[]
+    private descTipoProd: string[]
     private segmentacao: string
     private UepsPeps: string
     private validade: string
@@ -8,16 +8,20 @@ export class tipoProd {
         this.setIdTipo(idTipo); this.setDescTipoProd(descTipoProd); this.setSegmentacao(segmentacao); this.setUepsPeps(UepsPeps); this.setValidade(validade)
     }
     setIdTipo(idTipo: number){
-        this.idTipo = idTipo
+        this.idTipo.push(idTipo)
     }
-    getIdTipo(): number{
-        return this.idTipo
+    getIdTipo(): any{
+       this.idTipo.forEach(element => {
+            console.log(element)
+        });
     }
     setDescTipoProd(descTipoProd: string){
-        this.descTipoProd = descTipoProd
+        this.descTipoProd.push(descTipoProd)
     }
-    getDescTipoProd(): string{
-        return this.descTipoProd
+    getDescTipoProd(): any{
+        this.idTipo.forEach(element => {
+            console.log(element)
+        });
     }
     setSegmentacao(segmentacao: string){
         this.segmentacao = segmentacao
@@ -41,8 +45,14 @@ export class tipoProd {
         const NovoTipo = new tipoProd(idTipo, descTipoProd, segmentacao, UepsPeps, validade)
         console.log(`Novo tipo cadastrado!!`)
     }
-    excluiTipo(){
-
+    excluiTipo(id: number){ //código de exemplo, visto que não utilizaremos array e sim o bd
+        this.idTipo.forEach(idTipo => {
+            
+            if(id = (idTipo-1)){
+            
+                this.idTipo.splice(idTipo,1)
+            }
+        });
     }
     consultaTipo(){
 
