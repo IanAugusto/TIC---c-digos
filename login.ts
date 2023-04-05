@@ -52,4 +52,5 @@ export class login{
         this.logado = false;
 
     }
+    
 }
