@@ -1,6 +1,6 @@
 import { Permissao } from "./permissões"
 
-export class login{
+export class usuario{
     protected nome: string
     protected cpf: string
     protected senha: string

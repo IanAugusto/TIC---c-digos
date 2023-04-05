@@ -47,7 +47,7 @@ export class localEstoque{
         let i = 0
         this.id.forEach(tipo => {
             if(consulta = tipo){
-                this.id[i].getDescricao()
+                this.id[i].getDescricao();
             }
             i++
         });
