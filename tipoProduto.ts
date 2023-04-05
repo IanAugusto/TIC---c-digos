@@ -37,8 +37,9 @@ export class tipoProd {
     getValidade(): string{
         return this.validade
     }
-    cadastraTipo(){
-
+    cadastraTipo(idTipo: number, descTipoProd: string, segmentacao: string,UepsPeps: string, validade: string){
+        const NovoTipo = new tipoProd(idTipo, descTipoProd, segmentacao, UepsPeps, validade)
+        console.log(`Novo tipo cadastrado!!`)
     }
     excluiTipo(){
 

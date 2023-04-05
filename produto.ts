@@ -37,8 +37,9 @@
     getData(): Date{
         return this.data
     }
-    cadastraProd(){
-
+    cadastraProd(idProd: number, descricaoProd: string, UN: string, marca: string, data: Date){
+        const NovoProd = new Produto(idProd, descricaoProd, UN, marca, data)
+        console.log(`Novo produto cadastrado ${NovoProd.getDesProd()}`)
     }
     consultaProd(){
 

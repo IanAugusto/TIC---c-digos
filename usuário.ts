@@ -36,21 +36,12 @@ export class usuario{
     getIdUsuario(): string{
         return this.id_usuario
     }
-
-    login(senhaDigitada: string): boolean{
-        if (senhaDigitada == this.getSenha()){
-            console.log(`login bem sucedico usuário ${this.getNome()}`)
-            return true;
-        } else{
-            console.log(`senha incorreta, tente novamente ${this.getNome()}`)
-            return false;
-        }
+    cadastraUsuario(nome: string, cpf: string, senha: string, id_usuario: string, nivelAcesso: number){
+        const permissao = new Permissao(1, "descricaoPermis1");
+        const novoUsuario = new usuario(nome, cpf, senha, id_usuario, true, permissao)
+        console.log(`Novo usuário ${novoUsuario.getNome()} cadastrado.`);
+    }
+    consultaUsuario(){
 
     }
-    logout(): void{
-        console.log(`logout usuário ${this.getNome()}.`)
-        this.logado = false;
-
-    }
-    
 }

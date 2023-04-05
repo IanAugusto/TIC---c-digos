@@ -1,5 +1,5 @@
 import { usuario } from "./usuário";
-
+import { Permissao } from "./permissões";
 export class tipoMovimento  extends usuario{
     desMov: string
 
@@ -17,6 +17,6 @@ export class tipoMovimento  extends usuario{
 
     }
     saida(){
-        
+
     }
 }

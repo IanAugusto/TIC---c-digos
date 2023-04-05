@@ -5,9 +5,9 @@ export class Fornecedor {
     private cpf: string
     private cnpj: string
     private telefone: string
-    private pe: string
-    private pix: string
-    private cc: string
+    private pe: string // Prazo de entrega
+    private pix: string 
+    private cc: string // centro custo
     constructor(idForn: number, nomeForn: string, endereco: string, cpf: string, cnpj: string, telefone: string, pe: string, pix: string, cc: string){
         this.setidForn(idForn); this.setNomeForn(nomeForn); this.setEndereco(endereco); this.setCpf(cpf); this.setCnpj(cnpj); this.setTelefone(telefone); this.setPe(pe);
         this.setPix(pix); this.setCc(cc);
@@ -49,7 +49,7 @@ export class Fornecedor {
     getTelefone(): string {
         return this.telefone;
     }
-    setPe(pe: string) {
+    setPe(pe: string) {  
         this.pe = pe
     }
     getPe(): string {
@@ -61,16 +61,16 @@ export class Fornecedor {
     getPix(): string {
         return this.pix;
     }
-    setCc(cc: string) {
+    setCc(cc: string) { 
         this.cc = cc
     }
     getCc(): string {
         return this.cc;
     }
     consultaForn(){
-
     }
-    cadastraForn(){
-        
+    cadastraForn(idForn: number, nomeForn: string, endereco: string, cpf: string, cnpj: string, telefone: string, pe: string, pix: string, cc: string){
+        const NovoForn = new Fornecedor(idForn, nomeForn, endereco, cpf, cnpj, telefone, pe, pix, cc)
+        console.log(`Cadastro de fornecedor efetuado ${NovoForn.getNomeForn()}} `);   
     }
 }
