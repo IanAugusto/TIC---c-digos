@@ -1,4 +1,4 @@
-import { login } from "./login";
+import { login } from "./usuário";
 import { Permissao } from "./permissões";
 
 export class menu extends login {
