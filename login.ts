@@ -1,22 +1,77 @@
-import { usuario } from "./usuário";
-import { Permissao } from "./permissões";
-export class login extends usuario{
-    constructor(nome: string, cpf: string, senha: string, id_usuario: string, logado: boolean, permissao: Permissao){
-        super(nome, cpf, senha, id_usuario, logado, permissao)
-    }
-    login(senhaDigitada: string): boolean{
-        if (senhaDigitada == this.getSenha()){
-            console.log(`login bem sucedico usuário ${this.getNome()}`)
-            return true;
-        } else{
-            console.log(`senha incorreta, tente novamente ${this.getNome()}`)
-            return false;
-        }
+import { usuario } from "./Usuario";
 
-    }
-    logout(): void{
-        console.log(`logout usuário ${this.getNome()}.`)
-        this.logado = false;
+export class login
+{
+    private nome : string;
+    private senha : string;
 
+    Get_nome() : string
+    {
+        return this.nome;
+    }
+    Set_nome(value : string)
+    {
+        this.nome = value;
+    }
+    Get_senha() : string
+    {
+        return this.senha;
+    }
+    Set_senha(value : string)
+    {
+        this.senha = value;
+    }
+
+    private usuarios : Usuario[];
+    private movimentacoesCadastradas : MovimentaEstoque[];    
+    private fornecedoresCadastrados : Fornecedor[];
+    private produtosCadastrados : Produto[];
+    private tipoProdutoCadastrados : tipoProd[];
+    private localEstoqueCadastrados : localEstoque[];
+
+    Add_usuario(value : Usuario)
+    {
+        this.usuarios.push(value);
+    }
+    Add_movimentacoesCadastrada(value : MovimentaEstoque)
+    {
+        this.movimentacoesCadastradas.push(value);
+    }
+    Add_fornecedoresCadastrado(value : Fornecedor)
+    {
+        this.fornecedoresCadastrados.push(value);
+    }
+    Add_produtosCadastrado(value : Produto)
+    {
+        this.produtosCadastrados.push(value);
+    }
+    Add_tipoProdutoCadastrado(value : tipoProd)
+    {
+        this.tipoProdutoCadastrados.push(value);
+    }
+    Add_localEstoqueCadastrado(value : localEstoque)
+    {
+        this.localEstoqueCadastrados.push(value);
+    }
+
+    constructor(nome : string, senha : string)
+    {
+        this.Set_nome(nome);
+        this.Set_senha(nome);
+        this.usuarios = [];
+        this.movimentacoesCadastradas = [];
+        this.fornecedoresCadastrados = [];
+        this.produtosCadastrados = [];
+        this.tipoProdutoCadastrados = [];
+        this.localEstoqueCadastrados = [];
+    }
+
+    login()
+    {
+        //Compara username e senha inseridos com valores no BD
+    }
+    logout()
+    {
+        //Efetua logout e faz com que o usuário precise fazer login novamente para utilizar o software
     }
 }
