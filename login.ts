@@ -1,4 +1,9 @@
 import { usuario } from "./Usuario";
+import { movimentaEstoque } from "./MovimentaEstoque";
+import { Fornecedor } from "./fornecedor";
+import { Produto } from "./produto";
+import { tipoProd } from "./tipoProduto";
+import { localEstoque } from "./localEstoque";
 
 export class login
 {
@@ -22,18 +27,18 @@ export class login
         this.senha = value;
     }
 
-    private usuarios : Usuario[];
-    private movimentacoesCadastradas : MovimentaEstoque[];    
+    private usuarios : usuario[];
+    private movimentacoesCadastradas : movimentaEstoque[];    
     private fornecedoresCadastrados : Fornecedor[];
     private produtosCadastrados : Produto[];
     private tipoProdutoCadastrados : tipoProd[];
     private localEstoqueCadastrados : localEstoque[];
 
-    Add_usuario(value : Usuario)
+    Add_usuario(value : usuario)
     {
         this.usuarios.push(value);
     }
-    Add_movimentacoesCadastrada(value : MovimentaEstoque)
+    Add_movimentacoesCadastrada(value : movimentaEstoque)
     {
         this.movimentacoesCadastradas.push(value);
     }
