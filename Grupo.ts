@@ -1,8 +1,8 @@
 export class grupo
 {
-    private id : number;
-    private nome : string;
-    private nivelPersmissão : number;
+    protected id : number;
+    protected nome : string;
+    protected nivelPersmissão : number;
     
     Get_id() : number
     {

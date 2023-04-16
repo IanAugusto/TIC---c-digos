@@ -4,7 +4,7 @@ export class localEstoque{
     private responsavel: number //idUsuario
 
     constructor(descricao: string, idTipoProd: number, id: number, responsavel: number){
-        this.setDescricao(descricao); this.setResposavel(responsavel); this.setTipoProd(idTipoProd); this.getId()      
+        this.setDescricao(descricao); this.setResposavel(responsavel);  this.getId()      
     }
     
     getDescricao(): string{
