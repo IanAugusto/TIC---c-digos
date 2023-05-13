@@ -1,3 +1,5 @@
+import { movimentaEstoque } from "./MovimentaEstoque";
+
 export class usuario
 {
     private id : number;
@@ -29,9 +31,9 @@ export class usuario
         this.senha = value;
     }
 
-    private movimentacoes : MovimentaEstoque[];
+    private movimentacoes : movimentaEstoque[];
 
-    Add_movimentacoes(value : MovimentaEstoque)
+    Add_movimentacoes(value : movimentaEstoque)
     {
         this.movimentacoes.push(value);
     }

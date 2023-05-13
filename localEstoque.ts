@@ -1,12 +1,10 @@
 export class localEstoque{
     private descricao: string
-    private idTipoProd: number
-    private id: number[] //id local estoque
+    private id: number //id local estoque
     private responsavel: number //idUsuario
 
     constructor(descricao: string, idTipoProd: number, id: number, responsavel: number){
-        this.setDescricao(descricao); this.setResposavel(responsavel); this.setTipoProd(idTipoProd);
-        this.id = []        
+        this.setDescricao(descricao); this.setResposavel(responsavel);  this.getId()      
     }
     
     getDescricao(): string{
@@ -15,23 +13,11 @@ export class localEstoque{
     setDescricao(descricao: string){
         this.descricao = descricao
     }
-    
-    getTipoProd(): number{
-        return this.idTipoProd
-    }
-    setTipoProd(tipoProd: number){
-        this.idTipoProd = tipoProd
-    }
-    
-    getId(){
-        let i = 0
-        this.id.forEach(tipo => {
-            console.log(i)
-            i++
-        });
+    getId(){ 
+        return this.id
     }
     setId(id: number){
-        this.id.push(id)
+        this.id = id
     }
     
     getResponsavel(): number{
@@ -41,16 +27,10 @@ export class localEstoque{
         this.responsavel = responsavel
     }
     insereLocal(){
-// utilizaremos quando criarmos o banco, no momento estamos utilizando constructor 
+// Integração com o banco de dados
     }
-    consultaLocal(consulta: number){
-        let i = 0
-        this.id.forEach(tipo => {
-            if(consulta = tipo){
-                this.id[i].getDescricao();
-            }
-            i++
-        });
+    consultaLocal(){
+        return `ID:${this.getId()} Descrição:${this.getDescricao()} Responsável:${this.getResponsavel()}`
     }
 
 

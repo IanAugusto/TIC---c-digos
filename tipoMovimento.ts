@@ -1,22 +1,52 @@
-import { usuario } from "./usuário";
-import { Permissao } from "./permissões";
-export class tipoMovimento  extends usuario{
-    desMov: string
+import { localEstoque } from "./localEstoque";
 
-    constructor(desMov: string, nome: string, cpf: string, senha: string, id_usuario: string, logado: boolean, permissao: Permissao){
-        super(nome, cpf, senha, id_usuario, logado, permissao)
-        this.setDesMov(desMov);
-    }
-    setDesMov(desMov: string){
-        this.desMov = desMov
-    }
-    getDesMov(): string{
-        return this.desMov
-    }
-    entrada(){
+export class tipoMovimento {
+    private descricao:string
+    private id: number
+    private localEstoque: localEstoque
+    private tipo: string
 
+    constructor(descricao: string,id: number, localEstoque: localEstoque, tipo: string){
+        this.setDescricao(descricao);
+        this.setId(id)
+        this.setLocalEstoque(localEstoque)
+        this.setTipo(tipo)
     }
-    saida(){
-
+    setDescricao(descricao: string){
+        this.descricao = descricao
+    }
+    getDescricao(): string{
+        return this.descricao
+    }
+    getId():number{
+        return this.id
+    }
+    setId(id: number){
+        this.id = id
+    }
+    getLocalEstoque():localEstoque{
+        return this.localEstoque
+    }
+    setLocalEstoque(value: localEstoque){
+        this.localEstoque = value
+    }
+    setTipo(value: string){
+        if(value == "entrada"){
+            this.tipo = "entrada"
+        }else if(value = "saida"){
+            this.tipo = "saida"
+        }else{
+            console.log("Tipo inválido")
+        }
+    }
+    getTipo():string{
+        return this.tipo
+    }
+    consultaTipo(){
+        return `Descrição: ${this.getDescricao()} ID: ${this.getId()} Local do Estoque: ${this.getLocalEstoque()} Tipo: ${this.getTipo()}`
+//Integração com o banco de dados
+    }
+    cadastraTipo(){
+        //Integração com o banco de dados
     }
 }
