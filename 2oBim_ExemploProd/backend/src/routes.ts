@@ -2,6 +2,8 @@ import { FastifyInstance } from "fastify";
 import {z} from 'zod';
 import {prisma} from './lib/prisma'
 
+
+
 export async function AppRoutes(app:FastifyInstance)
 {
 // -- Produto Start -- //
@@ -24,7 +26,7 @@ export async function AppRoutes(app:FastifyInstance)
     })
 
     app.post('/produto', async (request) => {
-        const postBody = z.object(
+        var postBody = z.object(
             {
                 cod_material: z.string(),
                 desc_prod: z.string(),
@@ -34,11 +36,11 @@ export async function AppRoutes(app:FastifyInstance)
                 estoque_min: z.number(),
                 estoque_max: z.number(),
                 id_unme: z.number(),
-                data_incl: z.date(),
+                data_incl: z.string().datetime(),
                 user_cad: z.string(),
-                data_cad: z.date(),
+                data_cad: z.string().datetime(),
             }
-        )
+        )   
 
         const {cod_material, desc_prod, marca_prod, id_tipo, sta_ativo, estoque_min, estoque_max, id_unme, data_incl, user_cad, data_cad} = postBody.parse(request.body);
 
@@ -73,9 +75,9 @@ export async function AppRoutes(app:FastifyInstance)
             "estoque_min": z.number(),
             "estoque_max": z.number(),
             "id_unme": z.number(),
-            "data_incl": z.date(),
+            "data_incl": z.string().datetime(),
             "user_cad": z.string(),
-            "data_cad": z.date()
+            "data_cad": z.string().datetime()
         })
 
         const {id} = idParam.parse(request.params)
@@ -144,7 +146,7 @@ export async function AppRoutes(app:FastifyInstance)
                 sta_mov_estoque: z.string(),
                 ueps_peps: z.string(),
                 user_cad: z.string(),
-                data_cad: z.date()
+                data_cad: z.string().datetime()
             }
         )
 
@@ -173,7 +175,7 @@ export async function AppRoutes(app:FastifyInstance)
             "sta_mov_estoque": z.string(),
             "ueps_peps": z.string(),
             "user_cad": z.string(),
-            "data_cad": z.date()
+            "data_cad": z.string().datetime()
         })
 
         const {id} = idParam.parse(request.params)
@@ -234,7 +236,7 @@ export async function AppRoutes(app:FastifyInstance)
             {
                 pessoa: z.boolean(),
                 nome_pessoa: z.string(),
-                data_cadastro: z.date(),
+                data_cadastro: z.string().datetime(),
                 num_cnpj: z.string(),
                 num_cpf: z.string(),
                 email: z.string(),
@@ -285,7 +287,7 @@ export async function AppRoutes(app:FastifyInstance)
         const putBody = z.object({
             "pessoa": z.boolean(),
             "nome_pessoa": z.string(),
-            "data_cadastro": z.date(),
+            "data_cadastro": z.string().datetime(),
             "num_cnpj": z.string(),
             "num_cpf": z.string(),
             "email": z.string(),
@@ -369,17 +371,15 @@ export async function AppRoutes(app:FastifyInstance)
     app.post('/fornprod', async (request) => {
         const postBody = z.object(
             {
-                id_fornprod: z.number(),
                 id_fornecedor: z.number(),
                 id_produto: z.number()
             }
         )
 
-        const {id_fornprod, id_fornecedor, id_produto} = postBody.parse(request.body);
+        const {id_fornecedor, id_produto} = postBody.parse(request.body);
 
         return await prisma.forn_Prod.create({
             data:{
-                id_fornprod: id_fornprod,
                 id_fornecedor: id_fornecedor,
                 id_produto: id_produto
             }
@@ -427,4 +427,287 @@ export async function AppRoutes(app:FastifyInstance)
         })
     })
 // -- Forn/Prod End -- //
+
+// -- Tipo Movimento Start -- //
+    app.get('/tipomov/all', async () => {
+        const all = await prisma.tipo_Movimento.findMany();
+        return all;
+    });
+
+    app.get('/tipomov/:id', async (request) => {
+        const titleParam = z.object({
+            id: z.string()
+        })
+        const {id} = titleParam.parse(request.params); 
+
+        return await prisma.tipo_Movimento.findMany({
+            where:{
+                id_tipo_mov: Number(id),
+            }
+        })
+    })
+
+    app.post('/tipomov', async (request) => {
+        const postBody = z.object(
+            {
+                desc_tipo_mov: z.string(),
+                desc_obs: z.string(),
+                sta_ativo: z.string(),
+                sta_tipo_mov: z.string()
+            }
+        )
+
+        const {desc_tipo_mov, desc_obs, sta_ativo, sta_tipo_mov} = postBody.parse(request.body);
+
+        return await prisma.tipo_Movimento.create({
+            data:{
+                desc_tipo_mov: desc_tipo_mov,
+                desc_obs: desc_obs,
+                sta_ativo: sta_ativo,
+                sta_tipo_mov: sta_tipo_mov
+            }
+        })
+    })
+
+    app.put('/tipomov/:id', async (request) => {
+        const idParam = z.object({
+            id: z.string()
+        })
+
+        const putBody = z.object({
+            desc_tipo_mov: z.string(),
+            desc_obs: z.string(),
+            sta_ativo: z.string(),
+            sta_tipo_mov: z.string()
+        })
+
+        const {id} = idParam.parse(request.params)
+        const {desc_tipo_mov, desc_obs, sta_ativo, sta_tipo_mov} = putBody.parse(request.body);
+
+        return await prisma.tipo_Movimento.updateMany({
+            where: {
+                id_tipo_mov: Number(id)
+            },
+            data:{
+                desc_tipo_mov: desc_tipo_mov,
+                desc_obs: desc_obs,
+                sta_ativo: sta_ativo,
+                sta_tipo_mov: sta_tipo_mov
+            }
+        })
+    })
+
+    app.delete('/tipomov/:id', async (request) =>
+    {
+        const idParam = z.object({
+            id: z.string()
+        })
+
+        const {id} = idParam.parse(request.params);
+
+        return await prisma.tipo_Movimento.delete({
+            where: {
+                id_tipo_mov: Number(id),
+            }
+        })
+    })
+// -- Tipo Movimento End -- //
+
+// -- Movimentação Start -- //
+    app.get('/mov/all', async () => {
+        const all = await prisma.movimentacao.findMany();
+        return all;
+    });
+
+    app.get('/mov/:id', async (request) => {
+        const titleParam = z.object({
+            id: z.string()
+        })
+        const {id} = titleParam.parse(request.params); 
+
+        return await prisma.movimentacao.findMany({
+            where:{
+                id_mov: Number(id),
+            }
+        })
+    })
+
+    app.post('/mov', async (request) => {
+        const postBody = z.object(
+            {
+                id_produto: z.number(),
+                es: z.string(),
+                data_movto: z.string().datetime(),
+                tipo_movto: z.number(),
+                qtd: z.number(),
+                valor: z.number(),
+                valor_total: z.number(),
+                valor_medio: z.number(),
+                qtd_est_atual: z.number(),
+                user_cad: z.string(),
+                data_cad: z.string()
+            }
+        )
+
+        const {id_produto, es, data_movto, tipo_movto, qtd, valor, valor_total, valor_medio, qtd_est_atual, user_cad, data_cad} = postBody.parse(request.body);
+
+        return await prisma.movimentacao.create({
+            data:{
+                id_produto: id_produto,
+                es: es,
+                data_movto: data_movto,
+                tipo_movto: tipo_movto,
+                qtd: qtd,
+                valor: valor,
+                valor_total: valor_total,
+                valor_medio: valor_medio,
+                qtd_est_atual: qtd_est_atual,
+                user_cad: user_cad,
+                data_cad: data_cad
+            }
+        })
+    })
+
+    app.put('/mov/:id', async (request) => {
+        const idParam = z.object({
+            id: z.string()
+        })
+
+        const putBody = z.object({
+            id_produto: z.number(),
+            es: z.string(),
+            data_movto: z.string().datetime(),
+            tipo_movto: z.number(),
+            qtd: z.number(),
+            valor: z.number(),
+            valor_total: z.number(),
+            valor_medio: z.number(),
+            qtd_est_atual: z.number(),
+            user_cad: z.string(),
+            data_cad: z.string()
+        })
+
+        const {id} = idParam.parse(request.params)
+        const {id_produto, es, data_movto, tipo_movto, qtd, valor, valor_total, valor_medio, qtd_est_atual, user_cad, data_cad} = putBody.parse(request.body);
+
+        return await prisma.movimentacao.updateMany({
+            where: {
+                id_mov: Number(id)
+            },
+            data:{
+                id_produto: id_produto ,
+                es: es ,
+                data_movto: data_movto ,
+                tipo_movto: tipo_movto ,
+                qtd: qtd ,
+                valor: valor ,
+                valor_total: valor_total ,
+                valor_medio: valor_medio ,
+                qtd_est_atual: qtd_est_atual ,
+                user_cad: user_cad ,
+                data_cad: data_cad
+            }
+        })
+    })
+
+    app.delete('/mov/:id', async (request) =>
+    {
+        const idParam = z.object({
+            id: z.string()
+        })
+
+        const {id} = idParam.parse(request.params);
+
+        return await prisma.movimentacao.delete({
+            where: {
+                id_mov: Number(id),
+            }
+        })
+    })
+// -- Movimentação End -- //
+
+// -- Unidade de Medida Start -- //
+    app.get('/unme/all', async () => {
+        const all = await prisma.unidade_Medida.findMany();
+        return all;
+    });
+
+    app.get('/unme/:id', async (request) => {
+        const titleParam = z.object({
+            id: z.string()
+        })
+        const {id} = titleParam.parse(request.params); 
+
+        return await prisma.unidade_Medida.findMany({
+            where:{
+                id_unme: Number(id),
+            }
+        })
+    })
+
+    app.post('/unme', async (request) => {
+        const postBody = z.object(
+            {
+                des_unidade: z.string(),
+                unid_sigla: z.string(),
+                user_cad: z.string(),
+                data_cad: z.string().datetime()
+            }
+        )
+
+        const {des_unidade, unid_sigla, user_cad, data_cad} = postBody.parse(request.body);
+
+        return await prisma.unidade_Medida.create({
+            data:{
+                des_unidade: des_unidade,
+                unid_sigla: unid_sigla,
+                user_cad: user_cad,
+                data_cad: data_cad
+            }
+        })
+    })
+
+    app.put('/unme/:id', async (request) => {
+        const idParam = z.object({
+            id: z.string()
+        })
+
+        const putBody = z.object({
+            des_unidade: z.string(),
+            unid_sigla: z.string(),
+            user_cad: z.string(),
+            data_cad: z.string().datetime()
+        })
+
+        const {id} = idParam.parse(request.params)
+        const {des_unidade, unid_sigla, user_cad, data_cad} = putBody.parse(request.body);
+
+        return await prisma.unidade_Medida.updateMany({
+            where: {
+                id_unme: Number(id)
+            },
+            data:{
+                des_unidade: des_unidade,
+                unid_sigla: unid_sigla,
+                user_cad: user_cad,
+                data_cad: data_cad
+            }
+        })
+    })
+
+    app.delete('/unme/:id', async (request) =>
+    {
+        const idParam = z.object({
+            id: z.string()
+        })
+
+        const {id} = idParam.parse(request.params);
+
+        return await prisma.unidade_Medida.delete({
+            where: {
+                id_unme: Number(id),
+            }
+        })
+    })
+// -- Unidade de Medida End -- //
 }

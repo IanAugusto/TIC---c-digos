@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Unidade_Medida {
+  id_unme           Int @id @default(autoincrement())
+  des_unidade       String
+  unid_sigla        String
+  user_cad          String
+  data_cad          DateTime
+  }
+
 model Tipo_Prod {
   id_tipo           Int @id @default(autoincrement())
   segmento          String
