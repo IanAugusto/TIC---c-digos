@@ -36,9 +36,9 @@ export async function AppRoutes(app:FastifyInstance)
                 estoque_min: z.number(),
                 estoque_max: z.number(),
                 id_unme: z.number(),
-                data_incl: z.string().datetime(),
+                data_incl: z.string(),
                 user_cad: z.string(),
-                data_cad: z.string().datetime(),
+                data_cad: z.string(),
             }
         )   
 
@@ -75,9 +75,9 @@ export async function AppRoutes(app:FastifyInstance)
             "estoque_min": z.number(),
             "estoque_max": z.number(),
             "id_unme": z.number(),
-            "data_incl": z.string().datetime(),
+            "data_incl": z.string(),
             "user_cad": z.string(),
-            "data_cad": z.string().datetime()
+            "data_cad": z.string()
         })
 
         const {id} = idParam.parse(request.params)
@@ -146,7 +146,7 @@ export async function AppRoutes(app:FastifyInstance)
                 sta_mov_estoque: z.string(),
                 ueps_peps: z.string(),
                 user_cad: z.string(),
-                data_cad: z.string().datetime()
+                data_cad: z.string()
             }
         )
 
@@ -175,7 +175,7 @@ export async function AppRoutes(app:FastifyInstance)
             "sta_mov_estoque": z.string(),
             "ueps_peps": z.string(),
             "user_cad": z.string(),
-            "data_cad": z.string().datetime()
+            "data_cad": z.string()
         })
 
         const {id} = idParam.parse(request.params)
@@ -236,7 +236,7 @@ export async function AppRoutes(app:FastifyInstance)
             {
                 pessoa: z.boolean(),
                 nome_pessoa: z.string(),
-                data_cadastro: z.string().datetime(),
+                data_cadastro: z.string(),
                 num_cnpj: z.string(),
                 num_cpf: z.string(),
                 email: z.string(),
@@ -287,7 +287,7 @@ export async function AppRoutes(app:FastifyInstance)
         const putBody = z.object({
             "pessoa": z.boolean(),
             "nome_pessoa": z.string(),
-            "data_cadastro": z.string().datetime(),
+            "data_cadastro": z.string(),
             "num_cnpj": z.string(),
             "num_cpf": z.string(),
             "email": z.string(),
@@ -537,7 +537,7 @@ export async function AppRoutes(app:FastifyInstance)
             {
                 id_produto: z.number(),
                 es: z.string(),
-                data_movto: z.string().datetime(),
+                data_movto: z.string(),
                 tipo_movto: z.number(),
                 qtd: z.number(),
                 valor: z.number(),
@@ -576,7 +576,7 @@ export async function AppRoutes(app:FastifyInstance)
         const putBody = z.object({
             id_produto: z.number(),
             es: z.string(),
-            data_movto: z.string().datetime(),
+            data_movto: z.string(),
             tipo_movto: z.number(),
             qtd: z.number(),
             valor: z.number(),
@@ -651,7 +651,7 @@ export async function AppRoutes(app:FastifyInstance)
                 des_unidade: z.string(),
                 unid_sigla: z.string(),
                 user_cad: z.string(),
-                data_cad: z.string().datetime()
+                data_cad: z.string()
             }
         )
 
@@ -676,7 +676,7 @@ export async function AppRoutes(app:FastifyInstance)
             des_unidade: z.string(),
             unid_sigla: z.string(),
             user_cad: z.string(),
-            data_cad: z.string().datetime()
+            data_cad: z.string()
         })
 
         const {id} = idParam.parse(request.params)
@@ -710,4 +710,22 @@ export async function AppRoutes(app:FastifyInstance)
         })
     })
 // -- Unidade de Medida End -- //
+
+// -- User Start -- //
+    app.get('/login/:username/:password', async (request) => {
+        const loginInfo = z.object({
+            username: z.string(),
+            password: z.string()
+        })
+
+        const {username, password} = loginInfo.parse(request.params);
+
+        return await prisma.user_Login.findFirst({
+            where: {
+                username: username,
+                password: password,
+            }
+        })
+    })
+// -- User End -- //
 }

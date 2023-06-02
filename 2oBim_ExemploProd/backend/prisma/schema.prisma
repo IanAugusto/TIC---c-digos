@@ -7,12 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User_Login {
+  username          String @id
+  password          String
+}
+
 model Unidade_Medida {
   id_unme           Int @id @default(autoincrement())
   des_unidade       String
   unid_sigla        String
   user_cad          String
-  data_cad          DateTime
+  data_cad          String
   }
 
 model Tipo_Prod {
@@ -22,7 +27,7 @@ model Tipo_Prod {
   sta_mov_estoque   String
   ueps_peps         String
   user_cad          String
-  data_cad          DateTime
+  data_cad          String
 }
 
 model Produto {
@@ -35,16 +40,16 @@ model Produto {
   estoque_min       Int
   estoque_max       Int
   id_unme           Int
-  data_incl         DateTime
+  data_incl         String
   user_cad          String
-  data_cad          DateTime
+  data_cad          String
 }
 
 model Fornecedor {
   id_fornecedor     Int @id @default(autoincrement())
   pessoa            Boolean
   nome_pessoa       String
-  data_cadastro     DateTime
+  data_cadastro     String
   num_cnpj          String
   num_cpf           String
   email             String
@@ -76,16 +81,16 @@ model Tipo_Movimento {
 }
 
 model Movimentacao {
-  id_mov          Int @id @default(autoincrement())
-  id_produto      Int
-  es              String
-  data_movto      DateTime
-  tipo_movto      Int
-  qtd             Int
-  valor           Int
-  valor_total     Int
-  valor_medio     Int
-  qtd_est_atual   Int
-  user_cad        String
-  data_cad        DateTime
+  id_mov            Int @id @default(autoincrement())
+  id_produto        Int
+  es                String
+  data_movto        String
+  tipo_movto        Int
+  qtd               Int
+  valor             Int
+  valor_total       Int
+  valor_medio       Int
+  qtd_est_atual     Int
+  user_cad          String
+  data_cad          String
 }
