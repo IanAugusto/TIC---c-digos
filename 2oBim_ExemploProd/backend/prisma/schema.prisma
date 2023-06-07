@@ -50,14 +50,9 @@ model Fornecedor {
   pessoa            Boolean
   nome_pessoa       String
   data_cadastro     String
-  num_cnpj          String
   num_cpf           String
   email             String
-  nome_contato      String
   nome_fantasia     String
-  num_rg            String
-  des_historico     String
-  nome_cargo        String
   ramo_atividade    String
   fone              String
   sta_possui_nfe    String
@@ -76,8 +71,6 @@ model Tipo_Movimento {
   id_tipo_mov       Int @id @default(autoincrement())
   desc_tipo_mov     String
   desc_obs          String
-  sta_ativo         String
-  sta_tipo_mov      String
 }
 
 model Movimentacao {
@@ -89,8 +82,6 @@ model Movimentacao {
   qtd               Int
   valor             Int
   valor_total       Int
-  valor_medio       Int
-  qtd_est_atual     Int
   user_cad          String
   data_cad          String
 }

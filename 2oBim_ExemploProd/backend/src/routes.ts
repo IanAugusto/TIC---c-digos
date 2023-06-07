@@ -237,14 +237,9 @@ export async function AppRoutes(app:FastifyInstance)
                 pessoa: z.boolean(),
                 nome_pessoa: z.string(),
                 data_cadastro: z.string(),
-                num_cnpj: z.string(),
                 num_cpf: z.string(),
                 email: z.string(),
-                nome_contato: z.string(),
                 nome_fantasia: z.string(),
-                num_rg: z.string(),
-                des_historico: z.string(),
-                nome_cargo: z.string(),
                 ramo_atividade: z.string(),
                 fone: z.string(),
                 sta_possui_nfe: z.string(),
@@ -254,21 +249,16 @@ export async function AppRoutes(app:FastifyInstance)
             }
         )
 
-        const {pessoa, nome_pessoa, data_cadastro, num_cnpj, num_cpf, email, nome_contato, nome_fantasia, num_rg, des_historico, nome_cargo, ramo_atividade, fone, sta_possui_nfe, website, num_insc_estatual, prazo_entrega} = postBody.parse(request.body);
+        const {pessoa, nome_pessoa, data_cadastro, num_cpf, email, nome_fantasia, ramo_atividade, fone, sta_possui_nfe, website, num_insc_estatual, prazo_entrega} = postBody.parse(request.body);
 
         return await prisma.fornecedor.create({
             data:{
                 pessoa: pessoa,
                 nome_pessoa: nome_pessoa,
                 data_cadastro: data_cadastro,
-                num_cnpj: num_cnpj,
                 num_cpf: num_cpf,
                 email: email,
-                nome_contato: nome_contato,
                 nome_fantasia: nome_fantasia,
-                num_rg: num_rg,
-                des_historico: des_historico,
-                nome_cargo: nome_cargo,
                 ramo_atividade: ramo_atividade,
                 fone: fone,
                 sta_possui_nfe: sta_possui_nfe,
@@ -288,14 +278,9 @@ export async function AppRoutes(app:FastifyInstance)
             "pessoa": z.boolean(),
             "nome_pessoa": z.string(),
             "data_cadastro": z.string(),
-            "num_cnpj": z.string(),
             "num_cpf": z.string(),
             "email": z.string(),
-            "nome_contato": z.string(),
             "nome_fantasia": z.string(),
-            "num_rg": z.string(),
-            "des_historico": z.string(),
-            "nome_cargo": z.string(),
             "ramo_atividade": z.string(),
             "fone": z.string(),
             "sta_possui_nfe": z.string(),
@@ -305,7 +290,7 @@ export async function AppRoutes(app:FastifyInstance)
         })
 
         const {id} = idParam.parse(request.params)
-        const {pessoa, nome_pessoa, data_cadastro, num_cnpj, num_cpf, email, nome_contato, nome_fantasia, num_rg, des_historico, nome_cargo, ramo_atividade, fone, sta_possui_nfe, website, num_insc_estatual, prazo_entrega} = putBody.parse(request.body);
+        const {pessoa, nome_pessoa, data_cadastro, num_cpf, email, nome_fantasia, ramo_atividade, fone, sta_possui_nfe, website, num_insc_estatual, prazo_entrega} = putBody.parse(request.body);
 
         return await prisma.fornecedor.updateMany({
             where: {
@@ -315,14 +300,9 @@ export async function AppRoutes(app:FastifyInstance)
                 pessoa: pessoa,
                 nome_pessoa: nome_pessoa,
                 data_cadastro: data_cadastro,
-                num_cnpj: num_cnpj,
                 num_cpf: num_cpf,
                 email: email,
-                nome_contato: nome_contato,
                 nome_fantasia: nome_fantasia,
-                num_rg: num_rg,
-                des_historico: des_historico,
-                nome_cargo: nome_cargo,
                 ramo_atividade: ramo_atividade,
                 fone: fone,
                 sta_possui_nfe: sta_possui_nfe,
@@ -451,20 +431,16 @@ export async function AppRoutes(app:FastifyInstance)
         const postBody = z.object(
             {
                 desc_tipo_mov: z.string(),
-                desc_obs: z.string(),
-                sta_ativo: z.string(),
-                sta_tipo_mov: z.string()
+                desc_obs: z.string()
             }
         )
 
-        const {desc_tipo_mov, desc_obs, sta_ativo, sta_tipo_mov} = postBody.parse(request.body);
+        const {desc_tipo_mov, desc_obs} = postBody.parse(request.body);
 
         return await prisma.tipo_Movimento.create({
             data:{
                 desc_tipo_mov: desc_tipo_mov,
                 desc_obs: desc_obs,
-                sta_ativo: sta_ativo,
-                sta_tipo_mov: sta_tipo_mov
             }
         })
     })
@@ -477,12 +453,10 @@ export async function AppRoutes(app:FastifyInstance)
         const putBody = z.object({
             desc_tipo_mov: z.string(),
             desc_obs: z.string(),
-            sta_ativo: z.string(),
-            sta_tipo_mov: z.string()
         })
 
         const {id} = idParam.parse(request.params)
-        const {desc_tipo_mov, desc_obs, sta_ativo, sta_tipo_mov} = putBody.parse(request.body);
+        const {desc_tipo_mov, desc_obs} = putBody.parse(request.body);
 
         return await prisma.tipo_Movimento.updateMany({
             where: {
@@ -490,9 +464,7 @@ export async function AppRoutes(app:FastifyInstance)
             },
             data:{
                 desc_tipo_mov: desc_tipo_mov,
-                desc_obs: desc_obs,
-                sta_ativo: sta_ativo,
-                sta_tipo_mov: sta_tipo_mov
+                desc_obs: desc_obs
             }
         })
     })
@@ -542,14 +514,12 @@ export async function AppRoutes(app:FastifyInstance)
                 qtd: z.number(),
                 valor: z.number(),
                 valor_total: z.number(),
-                valor_medio: z.number(),
-                qtd_est_atual: z.number(),
                 user_cad: z.string(),
                 data_cad: z.string()
             }
         )
 
-        const {id_produto, es, data_movto, tipo_movto, qtd, valor, valor_total, valor_medio, qtd_est_atual, user_cad, data_cad} = postBody.parse(request.body);
+        const {id_produto, es, data_movto, tipo_movto, qtd, valor, valor_total, user_cad, data_cad} = postBody.parse(request.body);
 
         return await prisma.movimentacao.create({
             data:{
@@ -560,8 +530,6 @@ export async function AppRoutes(app:FastifyInstance)
                 qtd: qtd,
                 valor: valor,
                 valor_total: valor_total,
-                valor_medio: valor_medio,
-                qtd_est_atual: qtd_est_atual,
                 user_cad: user_cad,
                 data_cad: data_cad
             }
@@ -581,30 +549,26 @@ export async function AppRoutes(app:FastifyInstance)
             qtd: z.number(),
             valor: z.number(),
             valor_total: z.number(),
-            valor_medio: z.number(),
-            qtd_est_atual: z.number(),
             user_cad: z.string(),
             data_cad: z.string()
         })
 
         const {id} = idParam.parse(request.params)
-        const {id_produto, es, data_movto, tipo_movto, qtd, valor, valor_total, valor_medio, qtd_est_atual, user_cad, data_cad} = putBody.parse(request.body);
+        const {id_produto, es, data_movto, tipo_movto, qtd, valor, valor_total, user_cad, data_cad} = putBody.parse(request.body);
 
         return await prisma.movimentacao.updateMany({
             where: {
                 id_mov: Number(id)
             },
             data:{
-                id_produto: id_produto ,
-                es: es ,
-                data_movto: data_movto ,
-                tipo_movto: tipo_movto ,
-                qtd: qtd ,
-                valor: valor ,
-                valor_total: valor_total ,
-                valor_medio: valor_medio ,
-                qtd_est_atual: qtd_est_atual ,
-                user_cad: user_cad ,
+                id_produto: id_produto,
+                es: es,
+                data_movto: data_movto,
+                tipo_movto: tipo_movto,
+                qtd: qtd,
+                valor: valor,
+                valor_total: valor_total,
+                user_cad: user_cad,
                 data_cad: data_cad
             }
         })
