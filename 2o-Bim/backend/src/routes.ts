@@ -691,5 +691,21 @@ export async function AppRoutes(app:FastifyInstance)
             }
         })
     })
+
+    app.post('/login/:username/:password', async (request) => {
+        const loginInfo = z.object({
+            username: z.string(),
+            password: z.string()
+        })
+
+        const {username, password} = loginInfo.parse(request.params);
+
+        return await prisma.user_Login.create({
+            data: {
+                username: username,
+                password: password
+            }
+        })
+    })
 // -- User End -- //
 }

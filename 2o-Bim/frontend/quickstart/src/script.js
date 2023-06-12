@@ -21,6 +21,20 @@ async function Submit()
     }
 }
 
+//Efetua cadastro de usuário
+async function Registrar()
+{
+    const user = await fetch(`http://localhost:776/login/${document.getElementById("username").value}/${document.getElementById("password").value}`, {
+        method: "POST",
+    }).then(answer =>
+        {
+            alert("Usuário Cadstrado");
+        }).catch(error => 
+            {
+            alert("Operação falhou")
+            })
+}
+
 //Skippa Login
 async function Debug()
 {
