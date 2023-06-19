@@ -43,6 +43,7 @@ model Produto {
   data_incl         String
   user_cad          String
   data_cad          String
+  associacoes       Forn_Prod[]
 }
 
 model Fornecedor {
@@ -59,12 +60,15 @@ model Fornecedor {
   website           String
   num_insc_estatual String
   prazo_entrega     Int
+  associacoes       Forn_Prod[]
 }
 
 model Forn_Prod {
   id_fornprod       Int @id @default(autoincrement())
   id_fornecedor     Int
   id_produto        Int
+  prod              Produto @relation(fields: [id_produto], references: [id])
+  forn              Fornecedor @relation(fields: [id_fornecedor], references: [id_fornecedor])
 }
 
 model Tipo_Movimento {
