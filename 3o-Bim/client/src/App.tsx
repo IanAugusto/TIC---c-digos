@@ -16,7 +16,9 @@ import ProdRegistro from './components/registro/ProdRegistro'
 import FornConsulta from './components/consulta/FornConsulta'
 import FornRegistro from './components/registro/FornRegistro'
 import FornProdConsulta from './components/consulta/FornProdConsulta'
+import FornProdRegistro from './components/registro/FornProdRegistro'
 import TipoMovConsulta from './components/consulta/TipoMovConsulta'
+import TipoMovRegistro from './components/registro/TipoMovRegistro'
 import MovimentacaoConsulta from './components/consulta/MovimentacaoConsulta'
 
 function App()
@@ -37,7 +39,9 @@ function App()
           <Route path='/consultar/forn' element={<FornConsulta />} />
           <Route path='/editar/fornecedor' element={<FornRegistro />} />
           <Route path='/consultar/fornprod' element={<FornProdConsulta />} />
+          <Route path='/editar/fornprod' element={<FornProdRegistro />} />
           <Route path='/consultar/tipomov' element={<TipoMovConsulta />} />
+          <Route path='/editar/tipomov' element={<TipoMovRegistro />} />
           <Route path='/consultar/mov' element={<MovimentacaoConsulta />} />
         </Routes>
     </Router> 

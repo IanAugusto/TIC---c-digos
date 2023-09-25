@@ -48,24 +48,13 @@ export default function UnidadesMedidaRegistro()
     function unme(){navigateTo('/consultar/unme')}; function usuarios(){navigateTo('/consultar/usuarios')}; function tipoprod(){navigateTo('/consultar/tipoprod')};
     function prod(){navigateTo('/consultar/prod')}; function forn(){navigateTo('/consultar/forn')}; function fornprod(){navigateTo('/consultar/fornprod')};
     function tipomov(){navigateTo('/consultar/tipomov')}; function mov(){navigateTo('/consultar/mov')};
-    function retornar(){navigateTo(`/consultar/prod`)};
+    function retornar(){navigateTo(`/consultar/fornprod`)};
     function backToIndex(){navigate("/index", {state: {username: username}})};
 
     //Variáveis//
-    const [id, setatt1] = useState(selected)
-    const [cod_material, setatt2] = useState('')
-    const [desc_prod, setatt3] = useState('')    
-    const [marca_prod, setatt4] = useState('')
-    const [id_tipo, setatt5] = useState(0)
-    const [sta_ativo, setatt6] = useState('')
-    const [estoque_min, setatt7] = useState(0)
-    const [estoque_max, setatt8] = useState(0)
-    const [id_unme, setatt9] = useState(0)
-    const [user_cad, setatt10] = useState('')
-    const [data_cad, setatt11] = useState('')
-
-        //variavel redundante
-        const [data_incl, setdata_incl] = useState('')
+    const [id_fornprod, setatt1] = useState(0)
+    const [id_fornecedor, setatt2] = useState(0)
+    const [id_produto, setatt3] = useState(0)
 
     const [fornecedores, setForns] = useState<fornprops[]>([])
     const [produtos, setProds] = useState<prodprops[]>([])
@@ -73,22 +62,14 @@ export default function UnidadesMedidaRegistro()
     //Ações//
     const registrarOuEditar = async () => {
         const obj = {
-            cod_material: cod_material,
-            desc_prod: desc_prod,
-            marca_prod: marca_prod,
-            id_tipo: id_tipo,
-            sta_ativo: sta_ativo,
-            estoque_min: estoque_min,
-            estoque_max: estoque_max,
-            id_unme: id_unme,
-            user_cad: user_cad,
-            data_cad: data_cad,
-            data_incl: data_incl
+            id_fornprod: id_fornprod,
+            id_fornecedor: id_fornecedor,
+            id_produto: id_produto,
         }
 
         if(selected == 0)
         {
-            const apicall = await fetch(`http://localhost:776/produto`, {
+            const apicall = await fetch(`http://localhost:776/fornprod`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -99,7 +80,7 @@ export default function UnidadesMedidaRegistro()
         }
         else
         {
-            const apicall = await fetch(`http://localhost:776/produto/${selected}`, {
+            const apicall = await fetch(`http://localhost:776/fornprod/${selected}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
@@ -119,21 +100,13 @@ export default function UnidadesMedidaRegistro()
                 //Busca API pra preencher os dados do objeto a ser editado
                 const findobj = async () => {
                     try {
-                        const answer = await fetch(`http://localhost:776/produto/${selected}`)
+                        const answer = await fetch(`http://localhost:776/fornprod/${selected}`)
                         const obj = await answer.json();
                         if(answer.ok)
                         {                    
-                            setatt1(obj.id);
-                            setatt2(obj.cod_material);
-                            setatt3(obj.desc_prod);
-                            setatt4(obj.marca_prod);
-                            setatt5(obj.id_tipo);
-                            setatt6(obj.sta_ativo);
-                            setatt7(obj.estoque_min);
-                            setatt8(obj.estoque_max);
-                            setatt9(obj.id_unme);
-                            setatt10(obj.user_cad);
-                            setatt11(obj.data_cad);
+                            setatt1(obj.selected);
+                            setatt2(obj.id_fornecedor);
+                            setatt3(obj.id_produto);
                         }
                         else
                         {
@@ -150,16 +123,16 @@ export default function UnidadesMedidaRegistro()
 
             const fillselect = async () => {
                 try {
-                    const unmerq = await fetch(`http://localhost:776/unme/all`)
-                    const unme = await unmerq.json();
+                    const fornrq = await fetch(`http://localhost:776/fornecedor/all`)
+                    const forn = await fornrq.json();
 
-                    const tipoprodrq = await fetch(`http://localhost:776/tipoprod/all`)
-                    const tipoprod = await tipoprodrq.json();
+                    const prodrq = await fetch(`http://localhost:776/produto/all`)
+                    const prod = await prodrq.json();
 
-                    if(unmerq.ok && tipoprodrq.ok)
+                    if(fornrq.ok && prodrq.ok)
                     {
-                        setForns(unme)
-                        setProds(tipoprod)
+                        setForns(forn)
+                        setProds(prod)
                     }
                 }
                 catch{}
@@ -179,92 +152,40 @@ export default function UnidadesMedidaRegistro()
                         <button onClick={usuarios} className="flex-1 h-full bg-blue-300 hover:bg-blue-500 hover:shadow-lg duration-200 rounded-tl-lg">Usuarios</button>
                         <button onClick={unme} className="flex-1 h-full bg-red-300 hover:bg-red-500 duration-200 hover:shadow-lg">Unidade Medida</button>
                         <button onClick={tipoprod} className="flex-1 h-full bg-green-300 hover:bg-green-500 hover:shadow-lg duration-200">Tipo de Produto</button>
-                        <button className="h-[15%] bg-yellow-500 shadow-xl font-bold text-xl">Produto</button>
+                        <button onClick={prod} className="flex-1 h-full bg-yellow-300 hover:bg-yellow-500 hover:shadow-lg duration-200">Produto</button>
                         <button onClick={forn} className="flex-1 h-full bg-fuchsia-300 hover:bg-fuchsia-500 hover:shadow-lg duration-200">Fornecedor</button>
-                        <button onClick={fornprod} className="flex-1 h-full bg-teal-300 hover:bg-teal-500 hover:shadow-lg duration-200">Associação</button>
+                        <button onClick={fornprod} className="h-[15%] bg-teal-500 shadow-xl font-bold text-xl">Associação</button>
                         <button onClick={tipomov} className="flex-1 h-full bg-purple-300 hover:bg-purple-500 hover:shadow-lg duration-200">Tipo de Movimento</button>
                         <button onClick={mov} className="flex-1 h-full bg-rose-300 hover:bg-rose-500 hover:shadow-lg duration-200 rounded-bl-lg">Movimentação</button>
                     </div>
-                    <div className="flex flex-col space-y-4 items-end bg-yellow-500 w-full h-full rounded-r-xl p-8">
+                    <div className="flex flex-col space-y-4 items-end bg-teal-500 w-full h-full rounded-r-xl p-8">
                         <div className="flex flex-col bg-white w-full h-full rounded-lg overflow-auto p-1">
                             <form className="flex flex-col space-y-4 h-full w-full p-4 overflow-y-auto">
                                 <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att2" className="text-black font-bold">Código do Material</label>
-                                    <input type="text" id="att2" placeholder="exemplo: AL001" value={cod_material}
-                                           className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 placeholder:font-bold text-black focus:text-white" 
-                                           onChange={(e) => setatt2(e.target.value)}/>
-                                </div>
-                                <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att3" className="text-black font-bold">Descrição do Produto</label>
-                                    <input type="text" id="att3" placeholder="exemplo: Maçã" value={desc_prod}
-                                           className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 placeholder:font-bold text-black focus:text-white" 
-                                           onChange={(e) => setatt3(e.target.value)}/>
-                                </div>
-                                <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att4" className="text-black font-bold">Marca do Produto</label>
-                                    <input type="text" id="att4" placeholder="exemplo: Quitanda" value={marca_prod}
-                                           className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 placeholder:font-bold text-black focus:text-white" 
-                                           onChange={(e) => setatt4(e.target.value)}/>
-                                </div>
-                                <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att5" className="text-black font-bold">Tipo do Produto</label>
-                                    <select id="att5" value={id_tipo}
+                                    <label htmlFor="att2" className="text-black font-bold">Fornecedor</label>
+                                    <select id="att2" value={id_fornecedor}
                                     className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 text-black focus:text-white"
-                                    onChange={(e) => setatt5(Number(e.target.value))}>
+                                    onChange={(e) => setatt2(Number(e.target.value))}>
                                         <option value={-1}>Selecione uma opção</option>
                                         {
-                                            produtos.map((tipo) => (
-                                                <option key={tipo.id_tipo} value={tipo.id_tipo}>{tipo.segmento}</option>
+                                            fornecedores.map((forn) => (
+                                                <option key={forn.id_fornecedor} value={forn.id_fornecedor}>{forn.nome_fantasia}</option>
                                             ))
                                         }
                                     </select>
                                 </div>
                                 <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att6" className="text-black font-bold">Registro Ativo?</label>
-                                    <select id="att6" value={sta_ativo}
-                                    className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 text-black focus:text-white" 
-                                    onChange={(e) => setatt6(e.target.value)}>
-                                        <option value="Não Definido">Selecione uma Opção</option>
-                                        <option value="sim">Sim</option>
-                                        <option value="não">Não</option>
-                                    </select>
-                                </div>
-                                <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att7" className="text-black font-bold">Estoque Mínimo</label>
-                                    <input type="number" id="att7" value={estoque_min} min={0}
-                                           className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 placeholder:font-bold text-black focus:text-white" 
-                                           onChange={(e) => setatt7(Number(e.target.value))}/>
-                                </div>
-                                <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att8" className="text-black font-bold">Estoque Máximo</label>
-                                    <input type="number" id="att8" value={estoque_max} min={0}
-                                           className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 placeholder:font-bold text-black focus:text-white" 
-                                           onChange={(e) => setatt8(Number(e.target.value))}/>
-                                </div>
-                                <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att9" className="text-black font-bold">Unidade de Medida</label>
-                                    <select id="att9" value={id_unme}
+                                    <label htmlFor="att3" className="text-black font-bold">Produto</label>
+                                    <select id="att3" value={id_produto}
                                     className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 text-black focus:text-white"
-                                    onChange={(e) => setatt9(Number(e.target.value))}>
+                                    onChange={(e) => setatt3(Number(e.target.value))}>
                                         <option value={-1}>Selecione uma opção</option>
                                         {
-                                            fornecedores.map((unidade) => (
-                                                <option key={unidade.id_unme} value={unidade.id_unme}>{unidade.des_unidade}</option>
+                                            produtos.map((prod) => (
+                                                <option key={prod.id} value={prod.id}>{prod.desc_prod}</option>
                                             ))
                                         }
                                     </select>
-                                </div>
-                                <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att10" className="text-black font-bold">Cadastrado Por:</label>
-                                    <input type="text" id="att10" placeholder="Insira o nome do seu usuário aqui!!" value={user_cad}
-                                           className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 placeholder:font-bold text-black focus:text-white" 
-                                           onChange={(e) => setatt10(e.target.value)}/>
-                                </div>
-                                <div className="flex flex-col space-y-2 items-start w-full h-full">
-                                    <label htmlFor="att11" className="text-black font-bold">Cadastrado Em:</label>
-                                    <input type="date" id="att11" value={data_cad}
-                                           className="w-full rounded-md bg-gray-300 focus:outline-none focus:bg-gray-500 duration-200 p-2 placeholder:font-bold text-black focus:text-white" 
-                                           onChange={(e) => setatt11(String(e.target.value))}/>
                                 </div>
                             </form>
                         </div>
