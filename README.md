@@ -6,7 +6,7 @@
 ### Integrantes:
   - Ian Augusto Alvarenga Tonim 23924
   - Leandro Lopes Heleno 24004
-  - Gabriel Aguiar Silva 23922
+  - YuneUzuki 23922
   - Mariana Reis 24167
 
 ## Descrição
@@ -15,8 +15,4 @@ um software para gestão de estoque e patrimônio para a creche "Nossa Senhora d
 as quais se compõe de Classes quais poderiam ser utilizadas no nosso projeto. Já na pasta '2o-Bim', está o código fonte para a entrega do segundo bimestre, composto
 por um projeto qual utiliza as linguagens HTML, JS, TS, junto de frameworks como Tailwind, no front-end, e Prisma, Zod, Fastify e Cors, no back-end. O projeto entregue
 no 2º Bimestre se trata de um protótipo, com o objetivo de aprendizado e construção do back-end, com a criação de rotas API para permitir acesso ao Banco de Dados,
-por meio do front-end, e NÃO se trata do projeto final.
-
-## Observações
-Para utilização do código na pasta "2o-Bim", deve antes ser feita instalação das dependencias por meio do 'npm', Node Package Manager, além de incializar um servidor
-local, configurado no código feito para o link "http://localhost:776/", para que as rotas da API possam ser utilizadas.
+por meio do front-end, e NÃO se trata do projeto final, assim como o 3o Bimestre. O projeto final será desenvolvido para o 4o Bimestre.
