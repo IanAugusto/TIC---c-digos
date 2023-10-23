@@ -223,15 +223,373 @@ export async function AppRoutes(app:FastifyInstance)
     // -- Fim centro_custo -- //
 
     // -- fornecedor -- //
+    // Post //
+    app.post('/api/fornecedor', async (request) => {
+        var requestBody = z.object(
+            {
+                PESSOA: z.string(),
+                NOM_PESSOA: z.string(),
+                DAT_CADASTRO: z.string().pipe(z.coerce.date()),
+                NUM_CGC: z.string(),
+                NUM_CPF: z.string(),
+                EMAIL: z.string(),
+                NOM_CONTATO: z.string(),
+                STA_ATIVO: z.string(),
+                NOM_APELIDO: z.string(),
+                NOM_FANTASIA: z.string(),
+                NUM_RG: z.string(),
+                DES_HISTORICO: z.string(),
+                NOM_CARGO: z.string(),
+                RAMO_ATIVIDADE: z.string(),
+                FONE: z.string(),
+                STA_POSSUI_NFE: z.string(),
+                WEBSITE: z.string(),
+                NUM_INSC_ESTATUAL: z.string(),
+                USER_CAD: z.number(),
+                DATA_CAD: z.string().pipe(z.coerce.date())
+            }
+        )
+
+        const {PESSOA, NOM_PESSOA, DAT_CADASTRO, NUM_CGC, NUM_CPF, EMAIL, NOM_CONTATO, STA_ATIVO, NOM_APELIDO, NOM_FANTASIA, NUM_RG, DES_HISTORICO, NOM_CARGO, RAMO_ATIVIDADE, FONE, STA_POSSUI_NFE, WEBSITE, NUM_INSC_ESTATUAL, USER_CAD, DATA_CAD} = requestBody.parse(request.body);
+
+        return await prisma.fornecedor.create({
+            data: {
+                PESSOA: PESSOA,
+                NOM_PESSOA: NOM_PESSOA,
+                DAT_CADASTRO: DAT_CADASTRO,
+                NUM_CGC: NUM_CGC,
+                NUM_CPF: NUM_CPF,
+                EMAIL: EMAIL,
+                NOM_CONTATO: NOM_CONTATO,
+                STA_ATIVO: STA_ATIVO,
+                NOM_APELIDO: NOM_APELIDO,
+                NOM_FANTASIA: NOM_FANTASIA,
+                NUM_RG: NUM_RG,
+                DES_HISTORICO: DES_HISTORICO,
+                NOM_CARGO: NOM_CARGO,
+                RAMO_ATIVIDADE: RAMO_ATIVIDADE,
+                FONE: FONE,
+                STA_POSSUI_NFE: STA_POSSUI_NFE,
+                WEBSITE: WEBSITE,
+                NUM_INSC_ESTATUAL: NUM_INSC_ESTATUAL,
+                USER_CAD: USER_CAD,
+                DATA_CAD: DATA_CAD
+            }
+        })
+    })
+
+    // Get //
+    app.get("/api/fornecedor/all", async (request) => {
+        return await prisma.fornecedor.findMany()
+    })
+    app.get("/api/fornecedor/:ID", async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        })
+
+        const {ID} = titleParam.parse(request.params)
+
+        return await prisma.fornecedor.findFirst({
+            where: {
+                ID: ID
+            }
+        })
+    })
+
+    // Delete //
+    app.delete('/api/fornecedor/:ID', async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        })
+
+        const {ID} = titleParam.parse(request.params)
+
+        return await prisma.fornecedor.delete({
+            where: {
+                ID: ID
+            }
+        })
+    })
+
+    // Put //
+    app.put('/api/fornecedor/:ID', async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        })
+        var requestBody = z.object(
+            {
+                PESSOA: z.string(),
+                NOM_PESSOA: z.string(),
+                DAT_CADASTRO: z.string().pipe(z.coerce.date()),
+                NUM_CGC: z.string(),
+                NUM_CPF: z.string(),
+                EMAIL: z.string(),
+                NOM_CONTATO: z.string(),
+                STA_ATIVO: z.string(),
+                NOM_APELIDO: z.string(),
+                NOM_FANTASIA: z.string(),
+                NUM_RG: z.string(),
+                DES_HISTORICO: z.string(),
+                NOM_CARGO: z.string(),
+                RAMO_ATIVIDADE: z.string(),
+                FONE: z.string(),
+                STA_POSSUI_NFE: z.string(),
+                WEBSITE: z.string(),
+                NUM_INSC_ESTATUAL: z.string(),
+                USER_CAD: z.number(),
+                DATA_CAD: z.string().pipe(z.coerce.date())
+            }
+        )
+
+        const {PESSOA, NOM_PESSOA, DAT_CADASTRO, NUM_CGC, NUM_CPF, EMAIL, NOM_CONTATO, STA_ATIVO, NOM_APELIDO, NOM_FANTASIA, NUM_RG, DES_HISTORICO, NOM_CARGO, RAMO_ATIVIDADE, FONE, STA_POSSUI_NFE, WEBSITE, NUM_INSC_ESTATUAL, USER_CAD, DATA_CAD} = requestBody.parse(request.body);
+
+        const {ID} = titleParam.parse(request.params)
+
+        return await prisma.fornecedor.update({
+            where: {
+                ID: ID
+            },
+            data: {
+                PESSOA: PESSOA,
+                NOM_PESSOA: NOM_PESSOA,
+                DAT_CADASTRO: DAT_CADASTRO,
+                NUM_CGC: NUM_CGC,
+                NUM_CPF: NUM_CPF,
+                EMAIL: EMAIL,
+                NOM_CONTATO: NOM_CONTATO,
+                STA_ATIVO: STA_ATIVO,
+                NOM_APELIDO: NOM_APELIDO,
+                NOM_FANTASIA: NOM_FANTASIA,
+                NUM_RG: NUM_RG,
+                DES_HISTORICO: DES_HISTORICO,
+                NOM_CARGO: NOM_CARGO,
+                RAMO_ATIVIDADE: RAMO_ATIVIDADE,
+                FONE: FONE,
+                STA_POSSUI_NFE: STA_POSSUI_NFE,
+                WEBSITE: WEBSITE,
+                NUM_INSC_ESTATUAL: NUM_INSC_ESTATUAL,
+                USER_CAD: USER_CAD,
+                DATA_CAD: DATA_CAD
+            }
+        })
+    })
+
+    //
+    // -- Fim fornecedor -- //
+
+        // -- fornecedor_produto -- //
     //
 
     // Post //
-    app.post('/api/fornecedor', async (request) => {
+    app.post('/api/fornecedor_produto', async (request) => {
+        var requestBody = z.object({
+            ID_FORN: z.number(),
+            ID_PROD: z.number(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        })
+
+        const {ID_FORN,ID_PROD,USER_CAD,DATA_CAD} = requestBody.parse(request.body);
+
+        return await prisma.fornecedor_produto.create({
+            data: {
+                ID_FORN: ID_FORN,
+                ID_PROD: ID_PROD,
+                USER_CAD: USER_CAD,
+                DATA_CAD: DATA_CAD
+            }
+        })
+    })
+
+    // Get //
+    app.get("/api/fornecedor_produto/all", async (request) => {
+        return await prisma.fornecedor_produto.findMany()
+    })
+
+    app.get("/api/fornecedor_produto/:ID", async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        })
+
+        const {ID} = titleParam.parse(request.params)
+
+        return await prisma.fornecedor_produto.findFirst({
+            where: {
+                ID: ID
+            }
+        })
+    })
+
+    // Delete //
+    app.delete('/api/fornecedor_produto/:ID', async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        })
+
+        const {ID} = titleParam.parse(request.params)
+
+        return await prisma.fornecedor_produto.delete({
+            where: {
+                ID: ID
+            }
+        })
+    })
+
+    // Put //
+    app.put('/api/fornecedor_produto/:ID', async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        })
+        var requestBody = z.object({
+            ID_FORN: z.number(),
+            ID_PROD: z.number(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        })
+
+        const {ID_FORN,ID_PROD,USER_CAD,DATA_CAD} = requestBody.parse(request.body);
+        const {ID} = titleParam.parse(request.params)
+
+        return await prisma.fornecedor_produto.update({
+            where: {
+                ID: ID
+            },
+            data: {
+                ID_FORN: ID_FORN,
+                ID_PROD: ID_PROD,
+                USER_CAD: USER_CAD,
+                DATA_CAD: DATA_CAD
+            }
+        })
+    })
+
+    //
+    // -- Fim fornecedor_produto -- //
+
+     // -- movimentacao -- //
+    //
+    
+    // Post //
+    app.post('/api/movimentacao', async (request) => {
+        var requestBody = z.object({
+            ID_PROD: z.number(),
+            E_S: z.string(),
+            DATA_MOVTO: z.string().pipe(z.coerce.date()),
+            TIPO_MOVTO: z.number(),
+            QTD: z.number(),
+            VALOR: z.number(),
+            VALOR_TOTAL: z.number(),
+            VALOR_MEDIO: z.number(),
+            QTD_EST_ATUAL: z.number(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        })
+
+        const {ID_PROD, E_S, DATA_MOVTO, TIPO_MOVTO, QTD, VALOR, VALOR_TOTAL, VALOR_MEDIO, QTD_EST_ATUAL, USER_CAD, DATA_CAD} = requestBody.parse(request.body);
+        if(QTD < 0 || VALOR < 0|| VALOR_TOTAL < 0 || VALOR_MEDIO < 0 || QTD_EST_ATUAL <0){
+            return console.log("Quantidade e valor devem ser maior ou igual a 0")
+        }else{
+            return await prisma.movimentacao.create({
+                data: {
+                    ID_PROD: ID_PROD,
+                    E_S: E_S,
+                    DATA_MOVTO: DATA_MOVTO,
+                    TIPO_MOVTO: TIPO_MOVTO,
+                    QTD: QTD,
+                    VALOR: VALOR,
+                    VALOR_TOTAL: VALOR_TOTAL,
+                    VALOR_MEDIO: VALOR_MEDIO,
+                    QTD_EST_ATUAL: QTD_EST_ATUAL,
+                    USER_CAD: USER_CAD,
+                    DATA_CAD: DATA_CAD
+                }
+            })
+        }
+        
+    })
+
+    // Get //
+    app.get('/api/movimentacao/all', async (request) => {
+        return await prisma.movimentacao.findMany()
+    })
+    app.get('/api/movimentacao/:ID', async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        }) 
+
+        const {ID} = titleParam.parse(request.params)
+
+        return await prisma.movimentacao.findFirst({
+            where: {
+                ID: ID
+            }
+        })
+    })
+
+    // Delete //
+    app.delete('/api/movimentacao/:ID', async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        }) 
+
+        const {ID} = titleParam.parse(request.params)
+
+        return await prisma.movimentacao.delete({
+            where: {
+                ID: ID
+            }
+        })
+    })
+
+    // Put //
+    app.put('/api/movimentacao/:ID', async (request) => {
+        var titleParam = z.object({
+            ID: z.string().pipe(z.coerce.number())
+        }) 
+        var requestBody = z.object({
+            ID_PROD: z.number(),
+            E_S: z.string(),
+            DATA_MOVTO: z.string().pipe(z.coerce.date()),
+            TIPO_MOVTO: z.number(),
+            QTD: z.number(),
+            VALOR: z.number(),
+            VALOR_TOTAL: z.number(),
+            VALOR_MEDIO: z.number(),
+            QTD_EST_ATUAL: z.number(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        })
+
+        const {ID_PROD, E_S, DATA_MOVTO, TIPO_MOVTO, QTD, VALOR, VALOR_TOTAL, VALOR_MEDIO, QTD_EST_ATUAL, USER_CAD, DATA_CAD} = requestBody.parse(request.body);
+        const {ID} = titleParam.parse(request.params)
+        if(QTD < 0 || VALOR < 0 || VALOR_TOTAL < 0 || VALOR_MEDIO < 0 || QTD_EST_ATUAL <0){
+            return console.log("Quantidade deve ser maior ou igual a 0")
+        }else{
+            return await prisma.movimentacao.update({
+                where: {
+                    ID: ID
+                },
+                data: {
+                    ID_PROD: ID_PROD,
+                    E_S: E_S,
+                    DATA_MOVTO: DATA_MOVTO,
+                    TIPO_MOVTO: TIPO_MOVTO,
+                    QTD: QTD,
+                    VALOR: VALOR,
+                    VALOR_TOTAL: VALOR_TOTAL,
+                    VALOR_MEDIO: VALOR_MEDIO,
+                    QTD_EST_ATUAL: QTD_EST_ATUAL,
+                    USER_CAD: USER_CAD,
+                    DATA_CAD: DATA_CAD
+                }
+            })
+        }
         
     })
 
     //
-    // Fim fornecedor -- //
+    // -- Fim movimentacao -- //
+
 
 
     // -- Tipo_produto -- //
@@ -450,23 +808,27 @@ export async function AppRoutes(app:FastifyInstance)
         )
 
         const {COD_MATERIAL, DESCRICAO, MARCA, TIPO_PROD_ID, STA_ATIVO, QTD_ESTOQUE_MINIMO, QTD_ESTOQUE_MAXIMO, UNME_ID, DAT_INCLUSAO, IMAGEM, USER_CAD, DATA_CAD} = requestBody.parse(request.body)
-
-        return await prisma.produto.create({
-            data:{
-                COD_MATERIAL: COD_MATERIAL,
-                DESCRICAO:  DESCRICAO,
-                MARCA: MARCA,
-                TIPO_PROD_ID: TIPO_PROD_ID,
-                STA_ATIVO: STA_ATIVO,
-                QTD_ESTOQUE_MINIMO: QTD_ESTOQUE_MINIMO,
-                QTD_ESTOQUE_MAXIMO: QTD_ESTOQUE_MAXIMO,
-                UNME_ID: UNME_ID,
-                DAT_INCLUSAO: DAT_INCLUSAO,
-                IMAGEM: IMAGEM,
-                USER_CAD: USER_CAD,
-                DATA_CAD: DATA_CAD
-            }
-        })
+        if(QTD_ESTOQUE_MINIMO < 0 || QTD_ESTOQUE_MAXIMO < 0){
+           return console.log("Quantidade deve ser maior que 0")
+        }else{
+            return await prisma.produto.create({
+                data:{
+                    COD_MATERIAL: COD_MATERIAL,
+                    DESCRICAO:  DESCRICAO,
+                    MARCA: MARCA,
+                    TIPO_PROD_ID: TIPO_PROD_ID,
+                    STA_ATIVO: STA_ATIVO,
+                    QTD_ESTOQUE_MINIMO: QTD_ESTOQUE_MINIMO,
+                    QTD_ESTOQUE_MAXIMO: QTD_ESTOQUE_MAXIMO,
+                    UNME_ID: UNME_ID,
+                    DAT_INCLUSAO: DAT_INCLUSAO,
+                    IMAGEM: IMAGEM,
+                    USER_CAD: USER_CAD,
+                    DATA_CAD: DATA_CAD
+                }
+            })
+        }
+        
     })
 
     // Get //
@@ -526,26 +888,29 @@ export async function AppRoutes(app:FastifyInstance)
 
         const {ID} = titleParam.parse(request.params)
         const {COD_MATERIAL, DESCRICAO, MARCA, TIPO_PROD_ID, STA_ATIVO, QTD_ESTOQUE_MINIMO, QTD_ESTOQUE_MAXIMO, UNME_ID, DAT_INCLUSAO, IMAGEM, USER_CAD, DATA_CAD} = requestBody.parse(request.body)
-
-        return await prisma.produto.update({
-            where: {
+        if(QTD_ESTOQUE_MINIMO < 0 || QTD_ESTOQUE_MAXIMO < 0){
+            return console.log("Quantidade deve ser maior que 0")
+         }else{
+            return await prisma.produto.update({
+              where: {
                 ID: Number(ID)
-            },
-            data:{
-                COD_MATERIAL: COD_MATERIAL,
-                DESCRICAO:  DESCRICAO,
-                MARCA: MARCA,
-                TIPO_PROD_ID: TIPO_PROD_ID,
-                STA_ATIVO: STA_ATIVO,
-                QTD_ESTOQUE_MINIMO: QTD_ESTOQUE_MINIMO,
-                QTD_ESTOQUE_MAXIMO: QTD_ESTOQUE_MAXIMO,
-                UNME_ID: UNME_ID,
-                DAT_INCLUSAO: DAT_INCLUSAO,
-                IMAGEM: IMAGEM,
-                USER_CAD: USER_CAD,
-                DATA_CAD: DATA_CAD
-            }
-        })
+              },
+              data:{
+                  COD_MATERIAL: COD_MATERIAL,
+                  DESCRICAO:  DESCRICAO,
+                  MARCA: MARCA,
+                  TIPO_PROD_ID: TIPO_PROD_ID,
+                  STA_ATIVO: STA_ATIVO,
+                  QTD_ESTOQUE_MINIMO: QTD_ESTOQUE_MINIMO,
+                  QTD_ESTOQUE_MAXIMO: QTD_ESTOQUE_MAXIMO,
+                  UNME_ID: UNME_ID,
+                  DAT_INCLUSAO: DAT_INCLUSAO,
+                  IMAGEM: IMAGEM,
+                  USER_CAD: USER_CAD,
+                  DATA_CAD: DATA_CAD
+              }
+          })
+      }
     })
 
     //
