@@ -809,7 +809,7 @@ export async function AppRoutes(app:FastifyInstance)
 
         const {COD_MATERIAL, DESCRICAO, MARCA, TIPO_PROD_ID, STA_ATIVO, QTD_ESTOQUE_MINIMO, QTD_ESTOQUE_MAXIMO, UNME_ID, DAT_INCLUSAO, IMAGEM, USER_CAD, DATA_CAD} = requestBody.parse(request.body)
         if(QTD_ESTOQUE_MINIMO < 0 || QTD_ESTOQUE_MAXIMO < 0){
-           return console.log("Quantidade deve ser maior que 0")
+           return console.log("Quantidade deve ser maior ou igual a 0")
         }else{
             return await prisma.produto.create({
                 data:{
