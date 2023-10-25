@@ -35,7 +35,7 @@ export async function AppRoutes(app:FastifyInstance)
                 USUARIO: z.string(),
                 SENHA: z.string(),
                 NOME: z.string(),
-                EMAIL: z.string(),
+                EMAIL: z.string().nullable(),
                 DDD_CELULAR: z.number(),
                 CELULAR: z.number()
             }
@@ -96,7 +96,7 @@ export async function AppRoutes(app:FastifyInstance)
             USUARIO: z.string(),
             SENHA: z.string(),
             NOME: z.string(),
-            EMAIL: z.string(),
+            EMAIL: z.string().nullable(),
             DDD_CELULAR: z.number(),
             CELULAR: z.number()
         })
@@ -130,15 +130,15 @@ export async function AppRoutes(app:FastifyInstance)
         var requestBody = z.object(
             {
                 DES_CENTRO_CUSTO: z.string(),
-                STA_ATIVO: z.string(),
-                SIGLA: z.string(),
-                DATA_INICIAL: z.string().pipe(z.coerce.date()),
-                DATA_FINAL: z.string().pipe(z.coerce.date()),
-                OBSERVACOES: z.string()
+                STA_ATIVO: z.string().nullable(),
+                SIGLA: z.string().nullable(),
+                DATA_INICIAL: z.string().pipe(z.coerce.date()).nullable(),
+                DATA_FINAL: z.string().pipe(z.coerce.date()).nullable(),
+                OBSERVACOES: z.string().nullable()
             }
         )
 
-        const {DES_CENTRO_CUSTO,   STA_ATIVO, SIGLA, DATA_INICIAL, DATA_FINAL, OBSERVACOES} = requestBody.parse(request.body)
+        const {DES_CENTRO_CUSTO, STA_ATIVO, SIGLA, DATA_INICIAL, DATA_FINAL, OBSERVACOES} = requestBody.parse(request.body)
 
         return await prisma.centro_custo.create({
             data:{
@@ -193,11 +193,11 @@ export async function AppRoutes(app:FastifyInstance)
         var requestBody = z.object(
             {
                 DES_CENTRO_CUSTO: z.string(),
-                STA_ATIVO: z.string(),
-                SIGLA: z.string(),
-                DATA_INICIAL: z.string().pipe(z.coerce.date()),
-                DATA_FINAL: z.string().pipe(z.coerce.date()),
-                OBSERVACOES: z.string()
+                STA_ATIVO: z.string().nullable(),
+                SIGLA: z.string().nullable(),
+                DATA_INICIAL: z.string().pipe(z.coerce.date()).nullable(),
+                DATA_FINAL: z.string().pipe(z.coerce.date()).nullable(),
+                OBSERVACOES: z.string().nullable()
             }
         )
 
@@ -230,21 +230,21 @@ export async function AppRoutes(app:FastifyInstance)
                 PESSOA: z.string(),
                 NOM_PESSOA: z.string(),
                 DAT_CADASTRO: z.string().pipe(z.coerce.date()),
-                NUM_CGC: z.string(),
-                NUM_CPF: z.string(),
+                NUM_CGC: z.string().nullable(),
+                NUM_CPF: z.string().nullable(),
                 EMAIL: z.string(),
                 NOM_CONTATO: z.string(),
                 STA_ATIVO: z.string(),
-                NOM_APELIDO: z.string(),
+                NOM_APELIDO: z.string().nullable(),
                 NOM_FANTASIA: z.string(),
-                NUM_RG: z.string(),
-                DES_HISTORICO: z.string(),
-                NOM_CARGO: z.string(),
-                RAMO_ATIVIDADE: z.string(),
-                FONE: z.string(),
-                STA_POSSUI_NFE: z.string(),
-                WEBSITE: z.string(),
-                NUM_INSC_ESTATUAL: z.string(),
+                NUM_RG: z.string().nullable(),
+                DES_HISTORICO: z.string().nullable(),
+                NOM_CARGO: z.string().nullable(),
+                RAMO_ATIVIDADE: z.string().nullable(),
+                FONE: z.string().nullable(),
+                STA_POSSUI_NFE: z.string().nullable(),
+                WEBSITE: z.string().nullable(),
+                NUM_INSC_ESTATUAL: z.string().nullable(),
                 USER_CAD: z.number(),
                 DATA_CAD: z.string().pipe(z.coerce.date())
             }
@@ -321,21 +321,21 @@ export async function AppRoutes(app:FastifyInstance)
                 PESSOA: z.string(),
                 NOM_PESSOA: z.string(),
                 DAT_CADASTRO: z.string().pipe(z.coerce.date()),
-                NUM_CGC: z.string(),
-                NUM_CPF: z.string(),
+                NUM_CGC: z.string().nullable(),
+                NUM_CPF: z.string().nullable(),
                 EMAIL: z.string(),
                 NOM_CONTATO: z.string(),
                 STA_ATIVO: z.string(),
-                NOM_APELIDO: z.string(),
+                NOM_APELIDO: z.string().nullable(),
                 NOM_FANTASIA: z.string(),
-                NUM_RG: z.string(),
-                DES_HISTORICO: z.string(),
-                NOM_CARGO: z.string(),
-                RAMO_ATIVIDADE: z.string(),
-                FONE: z.string(),
-                STA_POSSUI_NFE: z.string(),
-                WEBSITE: z.string(),
-                NUM_INSC_ESTATUAL: z.string(),
+                NUM_RG: z.string().nullable(),
+                DES_HISTORICO: z.string().nullable(),
+                NOM_CARGO: z.string().nullable(),
+                RAMO_ATIVIDADE: z.string().nullable(),
+                FONE: z.string().nullable(),
+                STA_POSSUI_NFE: z.string().nullable(),
+                WEBSITE: z.string().nullable(),
+                NUM_INSC_ESTATUAL: z.string().nullable(),
                 USER_CAD: z.number(),
                 DATA_CAD: z.string().pipe(z.coerce.date())
             }
@@ -377,7 +377,7 @@ export async function AppRoutes(app:FastifyInstance)
     //
     // -- Fim fornecedor -- //
 
-        // -- fornecedor_produto -- //
+    // -- fornecedor_produto -- //
     //
 
     // Post //
@@ -797,19 +797,20 @@ export async function AppRoutes(app:FastifyInstance)
                 MARCA: z.string(),
                 TIPO_PROD_ID: z.number(),
                 STA_ATIVO: z.string(),
-                QTD_ESTOQUE_MINIMO: z.number(),
-                QTD_ESTOQUE_MAXIMO: z.number(),
+                QTD_ESTOQUE_MINIMO: z.number().nullable(),
+                QTD_ESTOQUE_MAXIMO: z.number().nullable(),
                 UNME_ID: z.number(),
                 DAT_INCLUSAO: z.string().pipe(z.coerce.date()),
-                IMAGEM: z.any(),
+                IMAGEM: z.any().nullable(),
                 USER_CAD: z.number(),
                 DATA_CAD: z.string().pipe(z.coerce.date())
             }
         )
 
         const {COD_MATERIAL, DESCRICAO, MARCA, TIPO_PROD_ID, STA_ATIVO, QTD_ESTOQUE_MINIMO, QTD_ESTOQUE_MAXIMO, UNME_ID, DAT_INCLUSAO, IMAGEM, USER_CAD, DATA_CAD} = requestBody.parse(request.body)
-        if(QTD_ESTOQUE_MINIMO < 0 || QTD_ESTOQUE_MAXIMO < 0){
-           return console.log("Quantidade deve ser maior ou igual a 0")
+        
+        if((QTD_ESTOQUE_MAXIMO != null && QTD_ESTOQUE_MINIMO !=null) && (QTD_ESTOQUE_MINIMO < 0 || QTD_ESTOQUE_MAXIMO < 0 || QTD_ESTOQUE_MAXIMO < QTD_ESTOQUE_MINIMO)){
+           return "Quantidade deve ser maior ou igual a 0, e o estoque máximo deve ser maior que o mínimo"
         }else{
             return await prisma.produto.create({
                 data:{
@@ -876,21 +877,22 @@ export async function AppRoutes(app:FastifyInstance)
                 MARCA: z.string(),
                 TIPO_PROD_ID: z.number(),
                 STA_ATIVO: z.string(),
-                QTD_ESTOQUE_MINIMO: z.number(),
-                QTD_ESTOQUE_MAXIMO: z.number(),
+                QTD_ESTOQUE_MINIMO: z.number().nullable(),
+                QTD_ESTOQUE_MAXIMO: z.number().nullable(),
                 UNME_ID: z.number(),
                 DAT_INCLUSAO: z.string().pipe(z.coerce.date()),
-                IMAGEM: z.any(),
+                IMAGEM: z.any().nullable(),
                 USER_CAD: z.number(),
                 DATA_CAD: z.string().pipe(z.coerce.date())
             }
         )
 
-        const {ID} = titleParam.parse(request.params)
+        const ID = titleParam.parse(request.params)
         const {COD_MATERIAL, DESCRICAO, MARCA, TIPO_PROD_ID, STA_ATIVO, QTD_ESTOQUE_MINIMO, QTD_ESTOQUE_MAXIMO, UNME_ID, DAT_INCLUSAO, IMAGEM, USER_CAD, DATA_CAD} = requestBody.parse(request.body)
-        if(QTD_ESTOQUE_MINIMO < 0 || QTD_ESTOQUE_MAXIMO < 0){
-            return console.log("Quantidade deve ser maior que 0")
-         }else{
+        
+        if((QTD_ESTOQUE_MAXIMO != null && QTD_ESTOQUE_MINIMO !=null) && (QTD_ESTOQUE_MINIMO < 0 || QTD_ESTOQUE_MAXIMO < 0 || QTD_ESTOQUE_MAXIMO < QTD_ESTOQUE_MINIMO)){
+           return "Quantidade deve ser maior ou igual a 0, e o estoque máximo deve ser maior que o mínimo"
+        }else{
             return await prisma.produto.update({
               where: {
                 ID: Number(ID)
