@@ -37,11 +37,12 @@ export async function AppRoutes(app:FastifyInstance)
                 NOME: z.string(),
                 EMAIL: z.string().nullable(),
                 DDD_CELULAR: z.number(),
-                CELULAR: z.number()
+                CELULAR: z.number(),
+                ADMIN: z.string()
             }
         )
 
-        const {USUARIO, SENHA, NOME, EMAIL, DDD_CELULAR, CELULAR} = requestBody.parse(request.body)
+        const {USUARIO, SENHA, NOME, EMAIL, DDD_CELULAR, CELULAR, ADMIN} = requestBody.parse(request.body)
 
         return await prisma.usuario.create({
             data:{
@@ -50,7 +51,8 @@ export async function AppRoutes(app:FastifyInstance)
                 NOME: NOME,
                 EMAIL: EMAIL,
                 DDD_CELULAR: DDD_CELULAR,
-                CELULAR: CELULAR
+                CELULAR: CELULAR,
+                ADMIN: ADMIN
             }
         })
     })
@@ -98,11 +100,12 @@ export async function AppRoutes(app:FastifyInstance)
             NOME: z.string(),
             EMAIL: z.string().nullable(),
             DDD_CELULAR: z.number(),
-            CELULAR: z.number()
+            CELULAR: z.number(),
+            ADMIN:z.string()
         })
 
         const {ID} = titleParam.parse(request.params);
-        const {USUARIO, SENHA, NOME, EMAIL, DDD_CELULAR, CELULAR} = requestBody.parse(request.body)
+        const {USUARIO, SENHA, NOME, EMAIL, DDD_CELULAR, CELULAR, ADMIN} = requestBody.parse(request.body)
 
         return await prisma.usuario.update({
             where:{
@@ -114,7 +117,8 @@ export async function AppRoutes(app:FastifyInstance)
                 NOME: NOME,
                 EMAIL: EMAIL,
                 DDD_CELULAR: DDD_CELULAR,
-                CELULAR: CELULAR
+                CELULAR: CELULAR,
+                ADMIN: ADMIN
             }
         })
     })
@@ -131,7 +135,7 @@ export async function AppRoutes(app:FastifyInstance)
               USUARIO: z.string(),
               SENHA: z.string(), 
             })
-        const {USUARIO, SENHA } = postBody.parse(request.body)
+        const {USUARIO, SENHA} = postBody.parse(request.body)
         const user = await prisma.usuario.findMany({
             where: {
                  USUARIO: USUARIO,
@@ -140,6 +144,9 @@ export async function AppRoutes(app:FastifyInstance)
         })
         return user
     })
+
+    //
+    // -- Fim login -- //
 
 
     // -- centro_custo -- //

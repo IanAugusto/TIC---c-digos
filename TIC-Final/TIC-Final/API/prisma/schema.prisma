@@ -135,6 +135,7 @@ model usuario {
   EMAIL                  String?                  @db.VarChar(300)
   DDD_CELULAR            Int                      @db.SmallInt
   CELULAR                Int
+  ADMIN                  String                   @db.Char(1) @default("N")
   fornecedor             fornecedor[]
   fornecedor_produto     fornecedor_produto[]
   movimentacao           movimentacao[]
