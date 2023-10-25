@@ -122,6 +122,26 @@ export async function AppRoutes(app:FastifyInstance)
     //
     // -- Fim usuario -- //
 
+    // -- Login -- //
+    //
+
+    // rota para recuperar um user
+    app.post('/api/usuario/login', async (request) => {
+       const postBody  = z.object({
+              USUARIO: z.string(),
+              SENHA: z.string(), 
+            })
+        const {USUARIO, SENHA } = postBody.parse(request.body)
+        const user = await prisma.usuario.findMany({
+            where: {
+                 USUARIO: USUARIO,
+                 SENHA: SENHA
+            }
+        })
+        return user
+    })
+
+
     // -- centro_custo -- //
     //
     
@@ -489,6 +509,16 @@ export async function AppRoutes(app:FastifyInstance)
         if(QTD < 0 || VALOR < 0|| VALOR_TOTAL < 0 || VALOR_MEDIO < 0 || QTD_EST_ATUAL <0){
             return console.log("Quantidade e valor devem ser maior ou igual a 0")
         }else{
+
+            //teste
+            let newQTD_EST_ATUAL = QTD_EST_ATUAL;
+            if (E_S === "E") {
+                newQTD_EST_ATUAL += QTD; // Addition for "E" movement
+            } else if (E_S === "S") {
+                newQTD_EST_ATUAL -= QTD; // Subtraction for "S" movement
+            }
+            //teste
+
             return await prisma.movimentacao.create({
                 data: {
                     ID_PROD: ID_PROD,
@@ -499,7 +529,7 @@ export async function AppRoutes(app:FastifyInstance)
                     VALOR: VALOR,
                     VALOR_TOTAL: VALOR_TOTAL,
                     VALOR_MEDIO: VALOR_MEDIO,
-                    QTD_EST_ATUAL: QTD_EST_ATUAL,
+                    QTD_EST_ATUAL: newQTD_EST_ATUAL,
                     USER_CAD: USER_CAD,
                     DATA_CAD: DATA_CAD
                 }
