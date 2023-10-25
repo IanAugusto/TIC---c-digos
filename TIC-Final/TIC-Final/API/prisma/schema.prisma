@@ -130,7 +130,7 @@ model unidade_medida {
 model usuario {
   ID                     Int                      @id @default(autoincrement())
   USUARIO                String                   @db.VarChar(100)
-  SENHA                  String                   @db.VarChar(8)
+  SENHA                  String                   @db.VarChar(20)
   NOME                   String                   @db.VarChar(300)
   EMAIL                  String?                  @db.VarChar(300)
   DDD_CELULAR            Int                      @db.SmallInt
