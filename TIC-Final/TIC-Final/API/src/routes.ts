@@ -838,7 +838,7 @@ export async function AppRoutes(app:FastifyInstance)
                 QTD_ESTOQUE_MAXIMO: z.number().nullable(),
                 UNME_ID: z.number(),
                 DAT_INCLUSAO: z.string().pipe(z.coerce.date()),
-                IMAGEM: z.any().nullable(),
+                IMAGEM: z.string().nullable(),
                 USER_CAD: z.number(),
                 DATA_CAD: z.string().pipe(z.coerce.date())
             }
@@ -918,7 +918,7 @@ export async function AppRoutes(app:FastifyInstance)
                 QTD_ESTOQUE_MAXIMO: z.number().nullable(),
                 UNME_ID: z.number(),
                 DAT_INCLUSAO: z.string().pipe(z.coerce.date()),
-                IMAGEM: z.any().nullable(),
+                IMAGEM: z.string().nullable(),
                 USER_CAD: z.number(),
                 DATA_CAD: z.string().pipe(z.coerce.date())
             }

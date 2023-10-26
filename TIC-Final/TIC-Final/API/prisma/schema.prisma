@@ -83,7 +83,7 @@ model produto {
   QTD_ESTOQUE_MAXIMO Decimal?             @db.Decimal(16, 3)
   UNME_ID            Int
   DAT_INCLUSAO       DateTime             @db.Date
-  IMAGEM             Bytes?
+  IMAGEM             String?
   USER_CAD           Int
   DATA_CAD           DateTime             @db.Date
   fornecedor_produto fornecedor_produto[]
