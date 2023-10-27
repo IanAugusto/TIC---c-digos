@@ -64,7 +64,7 @@ model movimentacao {
   VALOR                  Decimal                @db.Decimal(10, 2)
   VALOR_TOTAL            Decimal                @db.Decimal(10, 2)
   VALOR_MEDIO            Decimal                @db.Decimal(10, 2)
-  QTD_EST_ATUAL          Decimal                @db.Decimal(10, 2)
+  QTD_EST_ATUAL          Decimal?                @db.Decimal(10, 2)
   USER_CAD               Int
   DATA_CAD               DateTime               @db.Date
   produto                produto                @relation(fields: [ID_PROD], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "MOVTO_FIN_PRODUTO_FK")
