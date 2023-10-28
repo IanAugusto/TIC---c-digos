@@ -505,17 +505,19 @@ export async function AppRoutes(app:FastifyInstance)
             TIPO_MOVTO: z.number(),
             QTD: z.number(),
             VALOR: z.number(),
-            VALOR_TOTAL: z.number().nullable(),
-            VALOR_MEDIO: z.number().nullable(),
+            VALOR_TOTAL: z.number(),
+            VALOR_MEDIO: z.number(),
             QTD_EST_ATUAL: z.number().nullable(),
             USER_CAD: z.number(),
             DATA_CAD: z.string().pipe(z.coerce.date())
         })
 
         var {ID_PROD, E_S, DATA_MOVTO, TIPO_MOVTO, QTD, VALOR, VALOR_TOTAL, VALOR_MEDIO, QTD_EST_ATUAL, USER_CAD, DATA_CAD} = requestBody.parse(request.body);
+
         if(QTD < 0 || VALOR < 0){
-            return console.log("Quantidade e valor devem ser maior ou igual a 0")
+            return "Quantidade e valor devem ser maior ou igual a 0";
         }else{
+            VALOR_TOTAL = QTD * VALOR;
 
             const movimentacoes = await prisma.movimentacao.findMany({
                 where:
@@ -528,8 +530,16 @@ export async function AppRoutes(app:FastifyInstance)
             })
             if(movimentacoes[0] == null){
                 QTD_EST_ATUAL = 0
+                VALOR_MEDIO = VALOR_TOTAL
             }else{
                 QTD_EST_ATUAL = Number(movimentacoes[0].QTD_EST_ATUAL)
+
+                let aux = 0;
+                movimentacoes.forEach(element => {
+                    aux += Number(element.VALOR_TOTAL);
+                });
+
+                VALOR_MEDIO = (aux+VALOR_TOTAL) / (movimentacoes.length+1)
             }
 
             let criaMov = await prisma.movimentacao.create({
@@ -562,16 +572,25 @@ export async function AppRoutes(app:FastifyInstance)
             let updateMov;
 
             if (E_S === 'S') {
-                updateMov = await prisma.movimentacao.update({
-                    where: {
-                        ID: novaMov[0].ID
-                    },
-                    data: {
-                        QTD_EST_ATUAL: {
-                            decrement: QTD
+                if(QTD_EST_ATUAL >= QTD) {
+                    updateMov = await prisma.movimentacao.update({
+                        where: {
+                            ID: novaMov[0].ID
+                        },
+                        data: {
+                            QTD_EST_ATUAL: {
+                                decrement: QTD
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    let variavel = await prisma.movimentacao.delete({
+                        where: {
+                            ID: novaMov[0].ID
+                        }
+                    })
+                    return "Quantidade sendo removida é maior que o total";
+                }
             } else {
                 updateMov = await prisma.movimentacao.update({
                     where: {
@@ -584,8 +603,7 @@ export async function AppRoutes(app:FastifyInstance)
                     }
                 });
             }
-
-        
+        }  
     })
 
     // Get //
@@ -600,21 +618,6 @@ export async function AppRoutes(app:FastifyInstance)
         const {ID} = titleParam.parse(request.params)
 
         return await prisma.movimentacao.findFirst({
-            where: {
-                ID: ID
-            }
-        })
-    })
-
-    // Delete //
-    app.delete('/api/movimentacao/:ID', async (request) => {
-        var titleParam = z.object({
-            ID: z.string().pipe(z.coerce.number())
-        }) 
-
-        const {ID} = titleParam.parse(request.params)
-
-        return await prisma.movimentacao.delete({
             where: {
                 ID: ID
             }
