@@ -15,6 +15,7 @@ model centro_custo {
   DATA_INICIAL     DateTime? @db.Date
   DATA_FINAL       DateTime? @db.Date
   OBSERVACOES      String?   @db.VarChar(2000)
+  movimentacao_financeira  movimentacao_financeira[]
 }
 
 model fornecedor {
@@ -41,6 +42,7 @@ model fornecedor {
   DATA_CAD           DateTime             @db.Date
   usuario            usuario              @relation(fields: [USER_CAD], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FORNECEDOR_USUARIO_FK")
   fornecedor_produto fornecedor_produto[]
+  movimentacao_financeira  movimentacao_financeira[]
 }
 
 model fornecedor_produto {
@@ -128,19 +130,66 @@ model unidade_medida {
 }
 
 model usuario {
+  ID                      Int                       @id @default(autoincrement())
+  USUARIO                 String                    @db.VarChar(100)
+  SENHA                   String                    @db.VarChar(20)
+  NOME                    String                    @db.VarChar(300)
+  EMAIL                   String?                   @db.VarChar(300)
+  DDD_CELULAR             Int                       @db.SmallInt
+  CELULAR                 Int 
+  ADMIN                   String                    @db.Char(1) @default("N")
+  fornecedor              fornecedor[]
+  fornecedor_produto      fornecedor_produto[]
+  movimentacao            movimentacao[]
+  produto                 produto[]
+  tipo_movimento_estoque  tipo_movimento_estoque[]
+  tipo_produto            tipo_produto[]
+  unidade_medida          unidade_medida[]
+  origem_receita          origem_receita[]
+  plano_contas            plano_contas[]
+  movimentacao_financeira movimentacao_financeira[]
+}
+
+model origem_receita {
   ID                     Int                      @id @default(autoincrement())
-  USUARIO                String                   @db.VarChar(100)
-  SENHA                  String                   @db.VarChar(20)
-  NOME                   String                   @db.VarChar(300)
-  EMAIL                  String?                  @db.VarChar(300)
-  DDD_CELULAR            Int                      @db.SmallInt
-  CELULAR                Int
-  ADMIN                  String                   @db.Char(1) @default("N")
-  fornecedor             fornecedor[]
-  fornecedor_produto     fornecedor_produto[]
-  movimentacao           movimentacao[]
-  produto                produto[]
-  tipo_movimento_estoque tipo_movimento_estoque[]
-  tipo_produto           tipo_produto[]
-  unidade_medida         unidade_medida[]
+  ATIVO                  String                   @db.Char(1)
+  DESCRICAO              String                   @db.VarChar(100)
+  OBSERVACAO             String?                  @db.VarChar(400)
+  USER_CAD               Int
+  DATA_CAD               DateTime                 @db.Date
+  usuario                usuario                  @relation(fields: [USER_CAD], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "OR_RECEITA_USUARIO_FK")
+  movimentacao_financeira  movimentacao_financeira[]
+}
+
+model plano_contas {
+  ID                       Int                         @id @default(autoincrement())
+  COD_NIVE1                Int                         
+  DESC_NIVEL1              Int                         
+  COD_NIVE2                Int                         
+  DESC_NIVEL2              Int                         
+  COD_NIVE3                Int                         
+  DESC_NIVEL3              Int                         
+  USER_CAD                 Int                         
+  DATA_CAD                 DateTime                    @db.Date
+  usuario                  usuario                     @relation(fields: [USER_CAD], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "PCONTAS_USUARIO_FK")
+  movimentacao_financeira  movimentacao_financeira[]
+}
+
+model movimentacao_financeira {
+  ID                     Int                      @id @default(autoincrement())
+  E_S                    String                   @db.Char(1)
+  ID_CENTRO_CUSTO        Int                      
+  DATA_MOVTO             DateTime                 @db.Date
+  ID_ORIG_RECEITA        Int                      
+  VALOR                  Decimal?                 @db.Decimal(16, 2)
+  ID_FORN                Int?                      
+  ID_PLANO               Int?                      
+  OBSERVACAO             String?                  @db.VarChar(400)              
+  USER_CAD               Int                      
+  DATA_CAD               DateTime                 @db.Date
+  usuario                usuario                  @relation(fields: [USER_CAD], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "MOVTOFIN_USUARIO_FK")
+  fornecedor             fornecedor?              @relation(fields: [ID_FORN], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "MOVTOFIN_FORN_FK")
+  centro_custo           centro_custo             @relation(fields: [ID_CENTRO_CUSTO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "MOVTOFIN_CCUSTO_FK")
+  plano_contas           plano_contas?            @relation(fields: [ID_PLANO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "MOVTOFIN_PLANO_CONTAS_FK")
+  origem_receita         origem_receita           @relation(fields: [ID_ORIG_RECEITA], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "MOVTOFIN_ORIG_RECEITA_FK")
 }

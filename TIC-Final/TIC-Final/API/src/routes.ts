@@ -1055,4 +1055,413 @@ export async function AppRoutes(app:FastifyInstance)
 
     //
     // -- Fim tipo_movimento_estoque -- //
+
+    // -- origem_receita -- //
+    //
+
+    // Post //
+    app.post('/api/origem_receita', async (request) => {
+        var requestBody = z.object({
+            ATIVO: z.string(),
+            DESCRICAO: z.string(),
+            OBSERVACAO: z.string().nullable(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        });
+    
+        const { ATIVO, DESCRICAO, OBSERVACAO, USER_CAD, DATA_CAD } = requestBody.parse(request.body);
+    
+        return await prisma.origem_receita.create({
+            data: {
+                ATIVO: ATIVO,
+                DESCRICAO: DESCRICAO,
+                OBSERVACAO: OBSERVACAO,
+                USER_CAD: USER_CAD,
+                DATA_CAD: DATA_CAD
+            },
+            include: {
+                usuario: true,
+                movimentacao_financeira: true
+            }
+        });
+    });
+
+    // Get //
+    app.get('/api/origem_receita/all', async (request) => {
+        const origemReceitas = await prisma.origem_receita.findMany({
+            include: {
+                usuario: true,
+                movimentacao_financeira: true
+            }
+        });
+        return origemReceitas;
+    });
+    app.get('/api/origem_receita/:ID', async (request) => {
+        const titleParam = z.any()
+        const {ID} = titleParam.parse(request.params) 
+
+        const origemReceita = await prisma.origem_receita.findUnique({
+            where: {
+                ID: parseInt(ID)
+            },
+            include: {
+                usuario: true,
+                movimentacao_financeira: true
+            }
+        });
+        if (!origemReceita) {
+            return {
+                error: 'Origem Receita not found'
+            };
+        }
+        return origemReceita;
+    });
+    
+    // Delete //
+    app.delete('/api/origem_receita/:ID', async (request) => {
+        const titleParam = z.object({
+            ID: z.string()
+        });
+        try {
+            const { ID } = titleParam.parse(request.params);
+            const deletedOrigemReceita = await prisma.origem_receita.delete({
+                where: {
+                    ID: parseInt(ID)
+                }
+            });
+        
+            return {
+                message: 'Origem Receita deleted successfully',
+                deletedOrigemReceita
+            };
+        } catch (error) {
+            return {
+                error: 'Invalid ID parameter'
+            };
+        }
+    });
+
+    // Put //
+    app.put('/api/origem_receita/:ID', async (request) => {
+        const idParam = z.object({
+            ID: z.string()
+        });
+    
+        const requestBody = z.object({
+            ATIVO: z.string(),
+            DESCRICAO: z.string(),
+            OBSERVACAO: z.string().nullable(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        });
+    
+        try {
+            const { ID } = idParam.parse(request.params);
+            const { ATIVO, DESCRICAO, OBSERVACAO, USER_CAD, DATA_CAD } = requestBody.parse(request.body);
+    
+            const updatedOrigemReceita = await prisma.origem_receita.update({
+                where: {
+                    ID: parseInt(ID)
+                },
+                data: {
+                    ATIVO: ATIVO,
+                    DESCRICAO: DESCRICAO,
+                    OBSERVACAO: OBSERVACAO,
+                    USER_CAD: USER_CAD,
+                    DATA_CAD: DATA_CAD
+                },
+                include: {
+                    usuario: true,
+                    movimentacao_financeira: true
+                }
+            });
+    
+            return {
+                message: 'Origem Receita updated successfully',
+                updatedOrigemReceita
+            };
+        } catch (error) {
+            return {
+                error: 'Invalid data or ID parameter'
+            };
+        }
+    });
+
+    //
+    // -- fim origem_receita -- //
+
+    // -- plano_contas -- //
+    //
+
+    // Post //
+    app.post('/api/plano_contas', async (request) => {
+        const requestBody = z.object({
+            COD_NIVE1: z.number(),
+            DESC_NIVEL1: z.number(),
+            COD_NIVE2: z.number(),
+            DESC_NIVEL2: z.number(),
+            COD_NIVE3: z.number(),
+            DESC_NIVEL3: z.number(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        });
+    
+        try {
+            const { COD_NIVE1, DESC_NIVEL1, COD_NIVE2, DESC_NIVEL2, COD_NIVE3, DESC_NIVEL3, USER_CAD, DATA_CAD } = requestBody.parse(request.body);
+    
+            const newPlanoContas = await prisma.plano_contas.create({
+                data: {
+                    COD_NIVE1: COD_NIVE1,
+                    DESC_NIVEL1: DESC_NIVEL1,
+                    COD_NIVE2: COD_NIVE2,
+                    DESC_NIVEL2: DESC_NIVEL2,
+                    COD_NIVE3: COD_NIVE3,
+                    DESC_NIVEL3: DESC_NIVEL3,
+                    USER_CAD: USER_CAD,
+                    DATA_CAD: DATA_CAD
+                },
+                include: {
+                    usuario: true,
+                    movimentacao_financeira: true
+                }
+            });
+    
+            return {
+                message: 'Plano de Contas created successfully',
+                newPlanoContas
+            };
+        } catch (error) {
+            return {
+                error: 'Invalid data format'
+            };
+        }
+    });
+
+    // Get //
+    app.get('/api/plano_contas/all', async (request) => {
+        const planosContas = await prisma.plano_contas.findMany({
+            include: {
+                usuario: true,
+                movimentacao_financeira: true
+            }
+        });
+        return planosContas;
+    });
+    app.get('/api/plano_contas/:ID', async (request) => {
+        const idParam = z.object({
+            ID: z.number()
+        });
+    
+        try {
+            const { ID } = idParam.parse(request.params);
+    
+            const planoContas = await prisma.plano_contas.findUnique({
+                where: {
+                    ID: ID
+                },
+                include: {
+                    usuario: true,
+                    movimentacao_financeira: true
+                }
+            });
+    
+            if (!planoContas) {
+                return {
+                    error: 'Plano de Contas not found'
+                };
+            }
+    
+            return planoContas;
+        } catch (error) {
+            return {
+                error: 'Invalid ID parameter'
+            };
+        }
+    });
+
+    // Delete //
+    app.delete('/api/plano_contas/:ID', async (request) => {
+        const idParam = z.object({
+            ID: z.number()
+        });
+    
+        try {
+            const { ID } = idParam.parse(request.params);
+    
+            const deletedPlanoContas = await prisma.plano_contas.delete({
+                where: {
+                    ID: ID
+                }
+            });
+    
+            return {
+                message: 'Plano de Contas deleted successfully',
+                deletedPlanoContas
+            };
+        } catch (error) {
+            return {
+                error: 'Invalid ID parameter'
+            };
+        }
+    });
+
+    // Put //
+    app.put('/api/plano_contas/:ID', async (request) => {
+        const idParam = z.object({
+            ID: z.number()
+        });
+    
+        const requestBody = z.object({
+            COD_NIVE1: z.number(),
+            DESC_NIVEL1: z.number(),
+            COD_NIVE2: z.number(),
+            DESC_NIVEL2: z.number(),
+            COD_NIVE3: z.number(),
+            DESC_NIVEL3: z.number(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        });
+    
+        try {
+            const { ID } = idParam.parse(request.params);
+            const { COD_NIVE1, DESC_NIVEL1, COD_NIVE2, DESC_NIVEL2, COD_NIVE3, DESC_NIVEL3, USER_CAD, DATA_CAD } = requestBody.parse(request.body);
+    
+            const updatedPlanoContas = await prisma.plano_contas.update({
+                where: {
+                    ID: ID
+                },
+                data: {
+                    COD_NIVE1: COD_NIVE1,
+                    DESC_NIVEL1: DESC_NIVEL1,
+                    COD_NIVE2: COD_NIVE2,
+                    DESC_NIVEL2: DESC_NIVEL2,
+                    COD_NIVE3: COD_NIVE3,
+                    DESC_NIVEL3: DESC_NIVEL3,
+                    USER_CAD: USER_CAD,
+                    DATA_CAD: DATA_CAD
+                },
+                include: {
+                    usuario: true,
+                    movimentacao_financeira: true
+                }
+            });
+    
+            return {
+                message: 'Plano de Contas updated successfully',
+                updatedPlanoContas
+            };
+        } catch (error) {
+            return {
+                error: 'Invalid data or ID parameter'
+            };
+        }
+    });
+
+    //
+    // fim plano_contas //
+
+    // movimentacao_financeira //
+    //
+
+    // Post //
+    app.post('/api/movimentacao_financeira', async (request) => {
+        const requestBody = z.object({
+            E_S: z.string(),
+            ID_CENTRO_CUSTO: z.number(),
+            DATA_MOVTO: z.string().pipe(z.coerce.date()),
+            ID_ORIG_RECEITA: z.number(),
+            VALOR: z.number().nullable(),
+            ID_FORN: z.number().nullable(),
+            ID_PLANO: z.number().nullable(),
+            OBSERVACAO: z.string().nullable(),
+            USER_CAD: z.number(),
+            DATA_CAD: z.string().pipe(z.coerce.date())
+        });
+    
+        try {
+            const { E_S, ID_CENTRO_CUSTO, DATA_MOVTO, ID_ORIG_RECEITA, VALOR, ID_FORN, ID_PLANO, OBSERVACAO, USER_CAD, DATA_CAD } = requestBody.parse(request.body);
+    
+            const newMovimentacaoFinanceira = await prisma.movimentacao_financeira.create({
+                data: {
+                    E_S: E_S,
+                    ID_CENTRO_CUSTO: ID_CENTRO_CUSTO,
+                    DATA_MOVTO: DATA_MOVTO,
+                    ID_ORIG_RECEITA: ID_ORIG_RECEITA,
+                    VALOR: VALOR,
+                    ID_FORN: ID_FORN,
+                    ID_PLANO: ID_PLANO,
+                    OBSERVACAO: OBSERVACAO,
+                    USER_CAD: USER_CAD,
+                    DATA_CAD: DATA_CAD
+                },
+                include: {
+                    usuario: true,
+                    fornecedor: true,
+                    centro_custo: true,
+                    plano_contas: true,
+                    origem_receita: true
+                }
+            });
+    
+            return {
+                message: 'Movimentação Financeira created successfully',
+                newMovimentacaoFinanceira
+            };
+        } catch (error) {
+            return {
+                error: 'Invalid data format'
+            };
+        }
+    });
+
+    // Get //
+    app.get('/api/movimentacao_financeira/all', async (request) => {
+        const movimentacoesFinanceiras = await prisma.movimentacao_financeira.findMany({
+            include: {
+                usuario: true,
+                fornecedor: true,
+                centro_custo: true,
+                plano_contas: true,
+                origem_receita: true
+            }
+        });
+        return movimentacoesFinanceiras;
+    });
+    app.get('/api/movimentacao_financeira/:ID', async (request) => {
+        const idParam = z.object({
+            ID: z.number()
+        });
+    
+        try {
+            const { ID } = idParam.parse(request.params);
+    
+            const movimentacaoFinanceira = await prisma.movimentacao_financeira.findUnique({
+                where: {
+                    ID: ID
+                },
+                include: {
+                    usuario: true,
+                    fornecedor: true,
+                    centro_custo: true,
+                    plano_contas: true,
+                    origem_receita: true
+                }
+            });
+    
+            if (!movimentacaoFinanceira) {
+                return {
+                    error: 'Movimentação Financeira not found'
+                };
+            }
+    
+            return movimentacaoFinanceira;
+        } catch (error) {
+            return {
+                error: 'Invalid ID parameter'
+            };
+        }
+    });        
+    
+    //
+    // fim movimentacao_financeira //
 }
