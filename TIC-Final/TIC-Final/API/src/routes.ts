@@ -67,12 +67,37 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.usuario.findFirst({
             where:{
                 ID: Number(ID),
+            },
+            include: {
+                fornecedor: true,
+                fornecedor_produto: true,
+                movimentacao: true,
+                produto: true,
+                tipo_movimento_estoque: true,
+                tipo_produto: true,
+                unidade_medida: true,
+                origem_receita: true,
+                plano_contas: true,
+                movimentacao_financeira: true
             }
         })
     })
 
     app.get('/api/usuario/all', async (request) => {
-        return await prisma.usuario.findMany()
+        return await prisma.usuario.findMany({
+            include: {
+                fornecedor: true,
+                fornecedor_produto: true,
+                movimentacao: true,
+                produto: true,
+                tipo_movimento_estoque: true,
+                tipo_produto: true,
+                unidade_medida: true,
+                origem_receita: true,
+                plano_contas: true,
+                movimentacao_financeira: true
+            }
+        })
     })
 
     // Delete //
@@ -190,11 +215,18 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.centro_custo.findFirst({
             where: {
                 ID: Number(ID)
+            },
+            include: {
+                movimentacao_financeira: true
             }
         })
     })
     app.get('/api/centro_custo/all', async (request) => {
-        return await prisma.centro_custo.findMany()
+        return await prisma.centro_custo.findMany({
+            include: {
+                movimentacao_financeira: true
+            }
+        })
     })
 
     // Delete //
@@ -301,13 +333,19 @@ export async function AppRoutes(app:FastifyInstance)
                 NUM_INSC_ESTATUAL: NUM_INSC_ESTATUAL,
                 USER_CAD: USER_CAD,
                 DATA_CAD: DATA_CAD
-            }
+            },
         })
     })
 
     // Get //
     app.get("/api/fornecedor/all", async (request) => {
-        return await prisma.fornecedor.findMany()
+        return await prisma.fornecedor.findMany({
+            include: {
+                usuario: true,
+                fornecedor_produto: true,
+                movimentacao_financeira: true
+            }
+        })
     })
     app.get("/api/fornecedor/:ID", async (request) => {
         var titleParam = z.object({
@@ -319,6 +357,11 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.fornecedor.findFirst({
             where: {
                 ID: ID
+            },
+            include: {
+                usuario: true,
+                fornecedor_produto: true,
+                movimentacao_financeira: true
             }
         })
     })
@@ -430,7 +473,13 @@ export async function AppRoutes(app:FastifyInstance)
 
     // Get //
     app.get("/api/fornecedor_produto/all", async (request) => {
-        return await prisma.fornecedor_produto.findMany()
+        return await prisma.fornecedor_produto.findMany({
+            include: {
+                produto: true,
+                fornecedor: true,
+                usuario: true
+            }
+        })
     })
 
     app.get("/api/fornecedor_produto/:ID", async (request) => {
@@ -443,6 +492,11 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.fornecedor_produto.findFirst({
             where: {
                 ID: ID
+            },
+            include: {
+                produto: true,
+                fornecedor: true,
+                usuario: true
             }
         })
     })
@@ -608,7 +662,13 @@ export async function AppRoutes(app:FastifyInstance)
 
     // Get //
     app.get('/api/movimentacao/all', async (request) => {
-        return await prisma.movimentacao.findMany()
+        return await prisma.movimentacao.findMany({
+            include: {
+                usuario: true,
+                produto: true,
+                tipo_movimento_estoque: true
+            }
+        })
     })
     app.get('/api/movimentacao/:ID', async (request) => {
         var titleParam = z.object({
@@ -620,6 +680,11 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.movimentacao.findFirst({
             where: {
                 ID: ID
+            },
+            include: {
+                usuario: true,
+                produto: true,
+                tipo_movimento_estoque: true
             }
         })
     })
@@ -670,11 +735,20 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.tipo_produto.findFirst({
             where: {
                 ID: Number(ID)
+            },
+            include: {
+                usuario: true,
+                produto: true
             }
         })
     })
     app.get('/api/tipo_produto/all', async (request) => {
-        return await prisma.tipo_produto.findMany()
+        return await prisma.tipo_produto.findMany({
+            include: {
+                usuario: true,
+                produto: true
+            }
+        })
     })
 
     // Delete //
@@ -767,11 +841,19 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.unidade_medida.findFirst({
             where: {
                 ID: Number(ID)
+            },
+            include: {
+                usuario: true,
+                produto: true
             }
         })
     })
     app.get('/api/unidade_medida/all', async (request) => {
-        return await prisma.unidade_medida.findMany()
+        return await prisma.unidade_medida.findMany({
+            include: {
+                usuario: true
+            }
+        })
     })
 
     // Delete //
@@ -880,11 +962,26 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.produto.findFirst({
             where: {
                 ID: Number(ID)
+            },
+            include: {
+                usuario: true,
+                tipo_produto: true,
+                unidade_medida: true,
+                fornecedor_produto: true,
+                movimentacao: true
             }
         })
     })
     app.get('/api/produto/all', async (request) => {
-        return await prisma.produto.findMany()
+        return await prisma.produto.findMany({
+            include: {
+                usuario: true,
+                tipo_produto: true,
+                unidade_medida: true,
+                fornecedor_produto: true,
+                movimentacao: true
+            }
+        })
     })
 
     // Delete //
@@ -997,11 +1094,20 @@ export async function AppRoutes(app:FastifyInstance)
         return await prisma.tipo_movimento_estoque.findFirst({
             where: {
                 ID: Number(ID)
+            },
+            include: {
+                usuario: true,
+                movimentacao: true
             }
         })
     })
     app.get('/api/tipo_movimento_estoque/all', async (request) => {
-        return await prisma.tipo_movimento_estoque.findMany()
+        return await prisma.tipo_movimento_estoque.findMany({
+            include: {
+                usuario: true,
+                movimentacao: true
+            }
+        })
     })
 
     // Delete //
