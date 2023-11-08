@@ -1,5 +1,5 @@
 import {FastifyInstance} from "fastify";
-import { z } from "zod";
+import { coerce, z } from "zod";
 import { prisma } from "./lib/prisma"
 import dayjs from "dayjs";
 
@@ -1312,35 +1312,24 @@ export async function AppRoutes(app:FastifyInstance)
             DATA_CAD: z.string().pipe(z.coerce.date())
         });
     
-        try {
-            const { COD_NIVE1, DESC_NIVEL1, COD_NIVE2, DESC_NIVEL2, COD_NIVE3, DESC_NIVEL3, USER_CAD, DATA_CAD } = requestBody.parse(request.body);
-    
-            const newPlanoContas = await prisma.plano_contas.create({
-                data: {
-                    COD_NIVE1: COD_NIVE1,
-                    DESC_NIVEL1: DESC_NIVEL1,
-                    COD_NIVE2: COD_NIVE2,
-                    DESC_NIVEL2: DESC_NIVEL2,
-                    COD_NIVE3: COD_NIVE3,
-                    DESC_NIVEL3: DESC_NIVEL3,
-                    USER_CAD: USER_CAD,
-                    DATA_CAD: DATA_CAD
-                },
-                include: {
-                    usuario: true,
-                    movimentacao_financeira: true
-                }
-            });
-    
-            return {
-                message: 'Plano de Contas created successfully',
-                newPlanoContas
-            };
-        } catch (error) {
-            return {
-                error: 'Invalid data format'
-            };
-        }
+        const { COD_NIVE1, DESC_NIVEL1, COD_NIVE2, DESC_NIVEL2, COD_NIVE3, DESC_NIVEL3, USER_CAD, DATA_CAD } = requestBody.parse(request.body);
+
+        return await prisma.plano_contas.create({
+            data: {
+                COD_NIVE1: COD_NIVE1,
+                DESC_NIVEL1: DESC_NIVEL1,
+                COD_NIVE2: COD_NIVE2,
+                DESC_NIVEL2: DESC_NIVEL2,
+                COD_NIVE3: COD_NIVE3,
+                DESC_NIVEL3: DESC_NIVEL3,
+                USER_CAD: USER_CAD,
+                DATA_CAD: DATA_CAD
+            },
+            include: {
+                usuario: true,
+                movimentacao_financeira: true
+            }
+        });
     });
 
     // Get //
@@ -1355,7 +1344,7 @@ export async function AppRoutes(app:FastifyInstance)
     });
     app.get('/api/plano_contas/:ID', async (request) => {
         const idParam = z.object({
-            ID: z.number()
+            ID: z.number().pipe(z.coerce.number())
         });
     
         try {
@@ -1388,7 +1377,7 @@ export async function AppRoutes(app:FastifyInstance)
     // Delete //
     app.delete('/api/plano_contas/:ID', async (request) => {
         const idParam = z.object({
-            ID: z.number()
+            ID: z.string().pipe(z.coerce.number())
         });
     
         try {
@@ -1406,7 +1395,7 @@ export async function AppRoutes(app:FastifyInstance)
             };
         } catch (error) {
             return {
-                error: 'Invalid ID parameter'
+                error
             };
         }
     });
@@ -1414,7 +1403,7 @@ export async function AppRoutes(app:FastifyInstance)
     // Put //
     app.put('/api/plano_contas/:ID', async (request) => {
         const idParam = z.object({
-            ID: z.number()
+            ID: z.number().pipe(z.coerce.number())
         });
     
         const requestBody = z.object({
@@ -1515,7 +1504,7 @@ export async function AppRoutes(app:FastifyInstance)
             };
         } catch (error) {
             return {
-                error: 'Invalid data format'
+                error
             };
         }
     });
@@ -1535,7 +1524,7 @@ export async function AppRoutes(app:FastifyInstance)
     });
     app.get('/api/movimentacao_financeira/:ID', async (request) => {
         const idParam = z.object({
-            ID: z.number()
+            ID: z.number().pipe(z.coerce.number())
         });
     
         try {
