@@ -1303,11 +1303,11 @@ export async function AppRoutes(app:FastifyInstance)
     app.post('/api/plano_contas', async (request) => {
         const requestBody = z.object({
             COD_NIVE1: z.number(),
-            DESC_NIVEL1: z.number(),
+            DESC_NIVEL1: z.string().nullable(),
             COD_NIVE2: z.number(),
-            DESC_NIVEL2: z.number(),
+            DESC_NIVEL2: z.string().nullable(),
             COD_NIVE3: z.number(),
-            DESC_NIVEL3: z.number(),
+            DESC_NIVEL3: z.string().nullable(),
             USER_CAD: z.number(),
             DATA_CAD: z.string().pipe(z.coerce.date())
         });
@@ -1408,11 +1408,11 @@ export async function AppRoutes(app:FastifyInstance)
     
         const requestBody = z.object({
             COD_NIVE1: z.number(),
-            DESC_NIVEL1: z.number(),
+            DESC_NIVEL1: z.string().nullable(),
             COD_NIVE2: z.number(),
-            DESC_NIVEL2: z.number(),
+            DESC_NIVEL2:  z.string().nullable(),
             COD_NIVE3: z.number(),
-            DESC_NIVEL3: z.number(),
+            DESC_NIVEL3:  z.string().nullable(),
             USER_CAD: z.number(),
             DATA_CAD: z.string().pipe(z.coerce.date())
         });

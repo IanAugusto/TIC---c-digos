@@ -164,11 +164,11 @@ model origem_receita {
 model plano_contas {
   ID                       Int                         @id @default(autoincrement())
   COD_NIVE1                Int                         
-  DESC_NIVEL1              Int                         
+  DESC_NIVEL1              String?                    @db.VarChar(100)                         
   COD_NIVE2                Int                         
-  DESC_NIVEL2              Int                         
+  DESC_NIVEL2              String?                    @db.VarChar(100)                         
   COD_NIVE3                Int                         
-  DESC_NIVEL3              Int                         
+  DESC_NIVEL3              String?                    @db.VarChar(100)                         
   USER_CAD                 Int                         
   DATA_CAD                 DateTime                    @db.Date
   usuario                  usuario                     @relation(fields: [USER_CAD], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "PCONTAS_USUARIO_FK")
